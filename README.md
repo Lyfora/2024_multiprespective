@@ -12,3 +12,5 @@ user : neo4j
 pass : neo4j
 
 sehingga diperlukan mengganti settings django dibagian process_mining\settings.py bagian NEO4J_USER dan NEO4J_PASS
+
+File Pip requirements ada di process_mining\requirements.txt
