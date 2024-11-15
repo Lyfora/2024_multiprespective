@@ -1,0 +1,27 @@
+case_id;activity;resource;timestamp;product_type
+1;Receive an item and repair request;John;;Mobile Phone team
+2;Receive an item and repair request;John;;GPS team
+1;Notify the customer;Sue;;
+3;Receive an item and repair request;John;;Mobile Phone team
+3;Check the item;Mike;;
+2;Check the warranty;John;;
+4;Receive an item and repair request;John;;GPS team
+3;Check the warranty;John;;
+1;Check the item;Mike;;
+3;Notify the customer;Sue;;
+3;Repair the item;Pete;;
+1;Repair the item;Pete;;
+4;Check the warranty;John;;
+3;Issue payment;Jane;;
+4;Check the item;Jane;;
+1;Issue payment;Jane;;
+4;Notify the customer;Clare;;
+3;Return the item;Sue;;
+1;Return the item;Sue;;
+4;Repair the item;Pete;;
+2;Check the item;Pete;;
+2;Notify the customer;Clare;;
+4;Send a cancellation letter;Clare;;
+2;Send a cancellation letter;Clare;;
+2;Return the item;Clare;;
+4;Return the item;Clare;;

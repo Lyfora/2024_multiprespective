@@ -1,0 +1,14 @@
+case_id;activity;resource;timestamp
+1;Receive an item and repair request;John;
+1;Check the item;Mike;
+1;Check the warranty;John;
+1;Notify the customer;Sue;
+1;Repair the item;Pete;
+1;Issue payment;Jane;
+1;Return the item;Sue;
+2;Receive an item and repair request;John;
+2;Check the warranty;John;
+2;Check the item;Fred;
+2;Notify the customer;Clare;
+2;Send a cancellation letter;Clare;
+2;Return the item;Clare;

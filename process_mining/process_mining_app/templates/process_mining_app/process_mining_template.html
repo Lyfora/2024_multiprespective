@@ -1,0 +1,31 @@
+<!-- process_mining_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Process Mining with File Upload</title>
+  </head>
+  <body>
+    <h1>Upload a CSV File for Process Mining</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
+    <hr />
+    {% if image_path %}
+    <h2>Process Model Visualization</h2>
+    <img src="{{ image_path }}" alt="Process Model" />
+    {% else %}
+    <p>No image generated</p>
+    {% endif %}
+
+    <h2>Reachability Graph</h2>
+    {% if reachability_path %}
+    <h2>Reachability Model Visualization</h2>
+    <img src="{{ reachability_path }}" alt="Reachability Model" />
+    {% else %}
+    <p>No reachability generated</p>
+    {% endif %}
+  </body>
+</html>
