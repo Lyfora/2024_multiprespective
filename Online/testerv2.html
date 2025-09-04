@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GO-TR Deviation Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        #status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        #status.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        #status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .timestamp {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .case-id {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .low { 
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .medium { 
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .high { 
+            background-color: #f5c6cb;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .critical { 
+            background-color: #721c24;
+            color: white;
+            border-left: 4px solid #ff0000;
+        }
+        
+        .critical .timestamp {
+            color: #ddd;
+        }
+        
+        .event-history {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .buttons {
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .sync-status {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .source-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background-color: rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>GO-TR Real-time Deviation Monitor</h1>
+    
+    <div id="status" class="disconnected">Disconnected</div>
+    
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="total-alerts">0</div>
+            <div class="stat-label">Total Alerts</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="critical-count">0</div>
+            <div class="stat-label">Critical</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="active-cases">0</div>
+            <div class="stat-label">Active Cases</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="sync-status">0</div>
+            <div class="stat-label">Synced Alerts</div>
+        </div>
+    </div>
+    
+    <div class="buttons">
+        <button onclick="clearAlerts()">Clear All Alerts</button>
+        <button onclick="exportAlerts()">Export Alerts</button>
+        <button onclick="syncWithServer()">Sync with Server</button>
+    </div>
+    
+    <div id="sync-status-message" class="sync-status"></div>
+    
+    <div id="alerts"></div>
+
+    <script>
+        // Configuration
+        const WS_URL = 'ws://localhost:8000/ws';
+        const API_URL = 'http://localhost:8000';
+        const ALERTS_STORAGE_KEY = 'gotr_alerts_v2';
+        const MAX_STORED_ALERTS = 200;
+        const SYNC_INTERVAL = 30000; // 30 seconds
+        
+        // State
+        let ws = null;
+        let reconnectInterval = null;
+        let alertsMap = new Map(); // Use Map for efficient de-duplication
+        let lastSyncTimestamp = null;
+        
+        // DOM Elements
+        const statusDiv = document.getElementById('status');
+        const alertsDiv = document.getElementById('alerts');
+        const totalAlertsDiv = document.getElementById('total-alerts');
+        const criticalCountDiv = document.getElementById('critical-count');
+        const activeCasesDiv = document.getElementById('active-cases');
+        const syncStatusDiv = document.getElementById('sync-status');
+        const syncStatusMessage = document.getElementById('sync-status-message');
+        
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            // Step 1: Load from localStorage
+            loadFromLocalStorage();
+            
+            // Step 2: Sync with server to get any missed alerts
+            await syncWithServer();
+            
+            // Step 3: Connect WebSocket for real-time updates
+            connect();
+            
+            // Step 4: Set up periodic background tasks
+            setInterval(saveToLocalStorage, 5000); // Save to local storage every 5 seconds
+            setInterval(syncWithServer, SYNC_INTERVAL); // Sync with server periodically
+        });
+        
+        // WebSocket connection management
+        function connect() {
+            ws = new WebSocket(WS_URL);
+            
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                statusDiv.textContent = 'Connected';
+                statusDiv.className = 'connected';
+                
+                if (reconnectInterval) {
+                    clearInterval(reconnectInterval);
+                    reconnectInterval = null;
+                }
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'connection') {
+                    console.log('Connection established:', data.message);
+                } else if (data.type === 'deviation_alert' || data.type === 'critical_alert') {
+                    addAlert(data, 'websocket');
+                }
+            };
+            
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                statusDiv.textContent = 'Disconnected - Reconnecting...';
+                statusDiv.className = 'disconnected';
+                
+                if (!reconnectInterval) {
+                    reconnectInterval = setInterval(() => {
+                        console.log('Attempting to reconnect...');
+                        connect();
+                    }, 5000);
+                }
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+        
+        // Alert management
+        function addAlert(alertData, source = 'unknown') {
+            // Generate a unique ID if one isn't provided
+            if (!alertData.alert_id) {
+                alertData.alert_id = `${alertData.timestamp}_${alertData.case_id}`;
+            }
+            
+            // De-duplication check
+            if (alertsMap.has(alertData.alert_id)) {
+                console.log(`Duplicate alert ignored: ${alertData.alert_id}`);
+                return;
+            }
+            
+            alertsMap.set(alertData.alert_id, alertData);
+            displayAlert(alertData, source);
+            updateStatistics();
+        }
+        
+        function displayAlert(alertData, source) {
+            const alertElement = document.createElement('div');
+            alertElement.className = `alert ${alertData.severity}`;
+            alertElement.dataset.alertId = alertData.alert_id;
+            
+            // --- MODIFICATION START ---
+            // This HTML structure is simplified to match the desired output format.
+            // It uses the same fields as the simpler example.
+            alertElement.innerHTML = `
+                <strong>${new Date(alertData.timestamp).toLocaleString()}</strong><br>
+                Case: ${alertData.case_id}<br>
+                Type: ${alertData.deviation_type}<br>
+                Message: ${alertData.message}<br>
+                Score: ${alertData.cumulative_score.toFixed(2)}
+            `;
+            // --- MODIFICATION END ---
+            
+            // Insert alerts in chronological order (newest first)
+            const existingAlerts = Array.from(alertsDiv.children);
+            const insertIndex = existingAlerts.findIndex(el => {
+                const elTimestamp = alertsMap.get(el.dataset.alertId)?.timestamp;
+                return elTimestamp && new Date(elTimestamp) < new Date(alertData.timestamp);
+            });
+            
+            if (insertIndex === -1) {
+                // This will add older events to the bottom
+                alertsDiv.appendChild(alertElement);
+            } else {
+                // This will insert newer events before older ones
+                alertsDiv.insertBefore(alertElement, existingAlerts[insertIndex]);
+            }
+            
+            // Prune old alerts to prevent the DOM from growing too large
+            while (alertsDiv.children.length > MAX_STORED_ALERTS) {
+                const removed = alertsDiv.lastChild;
+                if (removed && removed.dataset.alertId) {
+                    alertsMap.delete(removed.dataset.alertId);
+                    removed.remove();
+                }
+            }
+        }
+        
+        function updateStatistics() {
+            const alerts = Array.from(alertsMap.values());
+            const criticalAlerts = alerts.filter(a => a.severity === 'critical');
+            
+            totalAlertsDiv.textContent = alertsMap.size;
+            criticalCountDiv.textContent = criticalAlerts.length;
+            // Note: Active cases will be updated from the server for better accuracy
+        }
+        
+        // Local Storage functions
+        function saveToLocalStorage() {
+            try {
+                const dataToStore = {
+                    alerts: Array.from(alertsMap.values()).slice(0, MAX_STORED_ALERTS),
+                    lastSync: lastSyncTimestamp,
+                };
+                localStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(dataToStore));
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+        
+        function loadFromLocalStorage() {
+            try {
+                const stored = localStorage.getItem(ALERTS_STORAGE_KEY);
+                if (!stored) return;
+                
+                const data = JSON.parse(stored);
+                console.log(`Loading ${data.alerts.length} alerts from localStorage`);
+                
+                data.alerts.forEach(alert => addAlert(alert, 'localStorage'));
+                
+                lastSyncTimestamp = data.lastSync;
+                showSyncStatus(`Loaded ${data.alerts.length} alerts from local cache`);
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+            }
+        }
+        
+        // Server synchronization
+        async function syncWithServer() {
+            try {
+                showSyncStatus('Syncing with server...');
+                
+                // Determine if we need to fetch all recent alerts or just new ones
+                const url = lastSyncTimestamp ?
+                    `${API_URL}/api/alerts/recent?limit=100&since_timestamp=${lastSyncTimestamp}` :
+                    `${API_URL}/api/alerts/recent?limit=100`; // Initial sync
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+                const data = await response.json();
+                
+                let newAlerts = 0;
+                data.alerts.forEach(alert => {
+                    if (!alertsMap.has(alert.alert_id)) {
+                        addAlert(alert, 'server-sync');
+                        newAlerts++;
+                    }
+                });
+                
+                // Update sync status and timestamp
+                lastSyncTimestamp = new Date().toISOString();
+                syncStatusDiv.textContent = alertsMap.size;
+                showSyncStatus(`Sync complete: Found ${newAlerts} new alerts.`);
+                
+                // Fetch the latest server-side stats for accuracy
+                await updateServerStats();
+                
+            } catch (error) {
+                console.error('Error syncing with server:', error);
+                showSyncStatus('Sync failed: ' + error.message, true);
+            }
+        }
+        
+        async function updateServerStats() {
+            try {
+                const response = await fetch(`${API_URL}/api/stats`);
+                 if (!response.ok) return;
+                const stats = await response.json();
+                
+                // Update the UI with server-authoritative stats
+                if (stats.active_cases !== undefined) {
+                    activeCasesDiv.textContent = stats.active_cases;
+                }
+            } catch (error) {
+                console.error('Error fetching server stats:', error);
+            }
+        }
+
+        function showSyncStatus(message, isError = false) {
+            syncStatusMessage.textContent = message;
+            syncStatusMessage.style.display = 'block';
+            syncStatusMessage.style.backgroundColor = isError ? '#f8d7da' : '#d1ecf1';
+            syncStatusMessage.style.color = isError ? '#721c24' : '#0c5460';
+            
+            setTimeout(() => {
+                syncStatusMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // User actions
+        function clearAlerts() {
+            if (!confirm('Are you sure you want to clear all alerts? This only affects your local view.')) {
+                return;
+            }
+            
+            alertsMap.clear();
+            alertsDiv.innerHTML = '';
+            updateStatistics();
+            localStorage.removeItem(ALERTS_STORAGE_KEY);
+            showSyncStatus('All local alerts have been cleared.');
+        }
+
+        function exportAlerts() {
+            if (alertsMap.size === 0) {
+                alert('No alerts to export.');
+                return;
+            }
+
+            const alerts = Array.from(alertsMap.values());
+            const headers = ['timestamp', 'case_id', 'deviation_type', 'severity', 'cumulative_score', 'message', 'event_history'];
+            
+            // Sanitize data for CSV
+            const escapeCSV = (str) => {
+                if (str === null || str === undefined) return '';
+                let result = String(str);
+                if (result.includes(',') || result.includes('"') || result.includes('\n')) {
+                    result = '"' + result.replace(/"/g, '""') + '"';
+                }
+                return result;
+            };
+
+            const csvRows = [headers.join(',')];
+            alerts.forEach(alert => {
+                const row = [
+                    alert.timestamp,
+                    alert.case_id,
+                    alert.deviation_type,
+                    alert.severity,
+                    alert.cumulative_score.toFixed(4),
+                    alert.message,
+                    alert.event_history ? alert.event_history.join(' | ') : ''
+                ].map(escapeCSV);
+                csvRows.push(row.join(','));
+            });
+
+            const csvString = csvRows.join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            const date = new Date().toISOString().slice(0, 10);
+            link.setAttribute('download', `gotr-alerts-${date}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

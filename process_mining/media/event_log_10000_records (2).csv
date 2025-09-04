@@ -1,0 +1,924 @@
+case_id,activity,resource,timestamp,product_type
+80,"Update inventory",Ryan,2024-01-01 01:04:19,Tablet
+69,"Receive an item and repair request",John,2024-01-01 01:01:00,Laptop
+71,"Check the item",Mike,2024-01-01 01:00:49,Laptop
+18,"Receive an item and repair request",John,2024-01-01 01:00:11,Laptop
+4,"Repair the item",Pete,2024-01-01 01:02:22,Camera
+70,"Repair the item",Pete,2024-01-01 01:02:02,Mobile Phone
+48,"Receive an item and repair request",John,2024-01-01 01:00:21,Laptop
+36,"Update warranty status",Maya,2024-01-01 01:04:58,Mobile Phone
+7,"Check the item",Mike,2024-01-01 01:01:23,GPS
+39,"Check the item",Mike,2024-01-01 01:01:00,Camera
+19,"Return the item",Sue,2024-01-01 01:03:40,Mobile Phone
+26,"Receive an item and repair request",John,2024-01-01 01:00:22,Laptop
+38,"Generate invoice",Emma,2024-01-01 01:03:49,Mobile Phone
+10,"Receive an item and repair request",John,2024-01-01 01:00:14,Laptop
+100,"Notify the customer",Sue,2024-01-01 01:01:14,Mobile Phone
+53,"Repair the item",Pete,2024-01-01 01:02:39,Tablet
+90,"Repair the item",Pete,2024-01-01 01:01:36,Camera
+37,"Repair the item",Pete,2024-01-01 01:02:56,Camera
+3,"Check the warranty",John,2024-01-01 01:02:12,Camera
+58,"Return the item",Sue,2024-01-01 01:04:47,Tablet
+93,"Issue payment",Jane,2024-01-01 01:02:33,Mobile Phone
+88,"Issue payment",Jane,2024-01-01 01:02:42,GPS
+62,"Log maintenance",Sophia,2024-01-01 01:04:21,Camera
+53,"Return the item",Sue,2024-01-01 01:03:34,Tablet
+9,"Update status",Alex,2024-01-01 01:04:29,Mobile Phone
+8,"Issue payment",Jane,2024-01-01 01:03:16,Camera
+37,"Check the item",Mike,2024-01-01 01:01:10,Camera
+64,"Check the item",Mike,2024-01-01 01:01:09,Camera
+41,"Receive an item and repair request",John,2024-01-01 01:00:31,Camera
+86,"Check the warranty",John,2024-01-01 01:02:41,GPS
+67,"Log activity",Liam,2024-01-01 01:05:33,Camera
+86,"Issue payment",Jane,2024-01-01 01:03:49,GPS
+67,"Notify the customer",Sue,2024-01-01 01:02:25,Camera
+41,"Repair the item",Pete,2024-01-01 01:03:36,Camera
+66,"Notify the customer",Sue,2024-01-01 01:02:16,Mobile Phone
+99,"Return the item",Sue,2024-01-01 01:04:48,Camera
+78,"Check connectivity",Nina,2024-01-01 01:04:11,Camera
+10,"Check quality",Alex,2024-01-01 01:04:45,Laptop
+54,"Check the warranty",John,2024-01-01 01:00:35,Camera
+46,"Check the item",Mike,2024-01-01 01:01:01,GPS
+73,"Validate rules",Sophia,2024-01-01 01:03:43,Camera
+39,"Monitor performance",Liam,2024-01-01 01:04:39,Camera
+66,"Review case notes",Sophia,2024-01-01 01:04:28,Mobile Phone
+75,"Notify the customer",Sue,2024-01-01 01:02:05,Camera
+73,"Return the item",Sue,2024-01-01 01:03:23,Camera
+50,"Check the warranty",John,2024-01-01 01:02:13,Laptop
+70,"Notify the customer",Sue,2024-01-01 01:01:37,Mobile Phone
+7,"Receive an item and repair request",John,2024-01-01 01:00:39,GPS
+64,"Repair the item",Pete,2024-01-01 01:01:42,Camera
+75,"Check the warranty",John,2024-01-01 01:01:41,Camera
+2,"Check the warranty",John,2024-01-01 01:01:31,GPS
+3,"Process documentation",Nina,2024-01-01 01:06:00,Camera
+51,"Issue payment",Jane,2024-01-01 01:02:25,Camera
+28,"Repair the item",Pete,2024-01-01 01:02:49,GPS
+16,"Notify the customer",Sue,2024-01-01 01:01:45,Tablet
+35,"Notify the customer",Sue,2024-01-01 01:02:27,GPS
+75,"Follow-up call",Nina,2024-01-01 09:00:30,Camera
+87,"Issue payment",Jane,2024-01-01 01:02:40,Tablet
+44,"Notify the customer",Sue,2024-01-01 01:01:42,GPS
+5,"Repair the item",Pete,2024-01-01 01:03:26,Mobile Phone
+66,"Receive an item and repair request",John,2024-01-01 01:00:39,Mobile Phone
+4,"Check the warranty",John,2024-01-01 01:00:46,Camera
+39,"Notify the customer",Sue,2024-01-01 01:02:41,Camera
+85,"Return the item",Sue,2024-01-01 01:03:58,Mobile Phone
+59,"Notify the customer",Sue,2024-01-01 01:03:25,Tablet
+93,"Return the item",Sue,2024-01-01 01:03:13,Mobile Phone
+11,"Issue payment",Jane,2024-01-01 01:02:39,Tablet
+8,"Receive an item and repair request",John,2024-01-01 01:00:07,Camera
+29,"Repair the item",Pete,2024-01-01 01:02:00,GPS
+61,"Send alert",Zoe,2024-01-01 01:06:23,GPS
+38,"Send reminder email",Ben,2024-01-01 01:04:30,Mobile Phone
+69,"Repair the item",Pete,2024-01-01 01:03:43,Laptop
+41,"Check the item",Mike,2024-01-01 01:01:12,Camera
+12,"Return the item",Sue,2024-01-01 01:03:47,Camera
+87,"Check the warranty",John,2024-01-01 01:01:59,Tablet
+85,"Repair the item",Pete,2024-01-01 01:02:45,Mobile Phone
+64,"Send confirmation",Ben,2024-01-01 01:03:12,Camera
+1,"Issue payment",Jane,2024-01-01 01:03:33,Camera
+57,"Repair the item",Pete,2024-01-01 01:02:35,Camera
+78,"Return the item",Sue,2024-01-01 01:03:20,Camera
+30,"Return the item",Sue,2024-01-01 01:03:08,Mobile Phone
+14,"Issue payment",Jane,2024-01-01 01:02:52,Camera
+22,"Generate report",Oscar,2024-01-01 01:04:27,Tablet
+97,"Audit trail",Nina,2024-01-01 01:05:27,Tablet
+36,"Return the item",Sue,2024-01-01 01:03:49,Mobile Phone
+19,"Create backup",Ben,2024-01-01 01:05:24,Mobile Phone
+4,"Monitor performance",Liam,2024-01-01 01:05:26,Camera
+20,"Update metadata",Nina,2024-01-01 01:05:27,Laptop
+31,"Check the item",Mike,2024-01-01 01:01:34,Camera
+14,"Return the item",Sue,2024-01-01 01:03:21,Camera
+27,"Check the warranty",John,2024-01-01 01:02:14,Camera
+4,"Return the item",Sue,2024-01-01 01:03:25,Camera
+71,"Return the item",Sue,2024-01-01 01:03:36,Laptop
+68,"Check the warranty",John,2024-01-01 01:01:18,Camera
+22,"Return the item",Sue,2024-01-01 01:03:42,Tablet
+14,"Update metadata",Ryan,2024-01-01 01:05:47,Camera
+69,"Issue payment",Jane,2024-01-01 01:04:37,Laptop
+9,"Return the item",Sue,2024-01-01 01:04:16,Mobile Phone
+93,"Check the warranty",John,2024-01-01 01:01:39,Mobile Phone
+38,"Check the warranty",John,2024-01-01 01:01:01,Mobile Phone
+3,"Issue payment",Jane,2024-01-01 01:04:21,Camera
+6,"Return the item",Sue,2024-01-01 01:04:06,Mobile Phone
+29,"Check compliance",Emma,2024-01-01 01:05:19,GPS
+4,"Review case notes",Emma,2024-01-01 01:04:52,Camera
+2,"Receive an item and repair request",John,2024-01-01 01:00:18,GPS
+56,"Validate data",Zoe,2024-01-01 01:03:39,Camera
+50,"Issue payment",Jane,2024-01-01 01:04:17,Laptop
+57,"Generate invoice",Nina,2024-01-01 01:04:23,Camera
+69,"Return the item",Sue,2024-01-01 01:04:57,Laptop
+16,"Receive an item and repair request",John,2024-01-01 01:00:09,Tablet
+30,"Issue payment",Jane,2024-01-01 01:02:10,Mobile Phone
+92,"Update customer record",Zoe,2024-01-01 01:06:01,GPS
+23,"Accidental reopen",Liam,2024-01-01 09:00:54,Mobile Phone
+3,"Check the item",Mike,2024-01-01 01:01:27,Camera
+92,"Check the warranty",John,2024-01-01 01:01:46,GPS
+14,"Check the warranty",John,2024-01-01 01:01:02,Camera
+56,"Audit trail",Nina,2024-01-01 01:04:33,Camera
+61,"Repair the item",Pete,2024-01-01 01:02:03,GPS
+83,"Receive an item and repair request",John,2024-01-01 01:00:56,Mobile Phone
+10,"Issue payment",Jane,2024-01-01 01:03:25,Laptop
+93,"Generate report",Liam,2024-01-01 01:04:05,Mobile Phone
+18,"Review metrics",Oscar,2024-01-01 01:04:59,Laptop
+55,"Return the item",Sue,2024-01-01 01:04:11,Laptop
+31,"Update customer record",Zoe,2024-01-01 01:05:01,Camera
+53,"Notify the customer",Sue,2024-01-01 01:02:28,Tablet
+30,"Generate report",Alex,2024-01-01 01:05:21,Mobile Phone
+94,"Issue payment",Jane,2024-01-01 01:03:22,Tablet
+97,"Check compliance",Maya,2024-01-01 01:05:50,Tablet
+94,"Check the warranty",John,2024-01-01 01:01:34,Tablet
+100,"Repair the item",Pete,2024-01-01 01:01:36,Mobile Phone
+21,"Repair the item",Pete,2024-01-01 01:03:14,Tablet
+23,"Receive an item and repair request",John,2024-01-01 01:00:54,Laptop
+26,"Repair the item",Pete,2024-01-01 01:02:21,Laptop
+15,"Check the warranty",John,2024-01-01 01:01:03,Mobile Phone
+44,"Check system status",Emma,2024-01-01 01:03:26,GPS
+48,"Check the item",Mike,2024-01-01 01:01:20,Laptop
+19,"Check the warranty",John,2024-01-01 01:01:23,Mobile Phone
+18,"Issue payment",Jane,2024-01-01 01:03:46,Laptop
+45,"Notify the customer",Sue,2024-01-01 01:01:58,Tablet
+48,"Return the item",Sue,2024-01-01 01:04:05,Laptop
+39,"Return the item",Sue,2024-01-01 01:03:50,Camera
+14,"Process refund",Nina,2024-01-01 01:04:56,Camera
+1,"Notify the customer",Sue,2024-01-01 01:02:11,Camera
+56,"Process queue",Alex,2024-01-01 01:03:44,Camera
+60,"Generate ID",Zoe,2024-01-01 01:04:10,GPS
+67,"Return the item",Sue,2024-01-01 01:04:05,Camera
+85,"Issue payment",Jane,2024-01-01 01:03:10,Mobile Phone
+71,"Repair the item",Pete,2024-01-01 01:02:37,Laptop
+77,"Repair the item",Pete,2024-01-01 01:04:10,Camera
+79,"Check permissions",Sophia,2024-01-01 01:04:40,GPS
+22,"Update inventory",Emma,2024-01-01 01:06:21,Tablet
+57,"Process billing",Ryan,2024-01-01 01:05:18,Camera
+54,"Notify the customer",Sue,2024-01-01 01:00:40,Camera
+22,"Check the item",Mike,2024-01-01 01:00:27,Tablet
+94,"Receive an item and repair request",John,2024-01-01 01:00:19,Tablet
+17,"Repair the item",Pete,2024-01-01 01:01:29,Tablet
+88,"Notify the customer",Sue,2024-01-01 01:02:17,GPS
+14,"Check the item",Mike,2024-01-01 01:00:49,Camera
+16,"Check the item",Mike,2024-01-01 01:00:55,Tablet
+76,"Check the item",Mike,2024-01-01 01:01:18,Mobile Phone
+19,"Notify the customer",Sue,2024-01-01 01:02:10,Mobile Phone
+86,"Return the item",Sue,2024-01-01 01:04:44,GPS
+12,"Notify the customer",Sue,2024-01-01 01:02:03,Camera
+82,"Check the item",Mike,2024-01-01 01:01:00,Camera
+18,"Check the item",Mike,2024-01-01 01:00:59,Laptop
+1,"Process refund",Nina,2024-01-01 01:06:00,Camera
+92,"Notify the customer",Sue,2024-01-01 01:02:13,GPS
+80,"Repair the item",Pete,2024-01-01 01:03:01,Tablet
+70,"Check the warranty",John,2024-01-01 01:01:21,Mobile Phone
+34,"Repair the item",Pete,2024-01-01 01:02:10,Laptop
+98,"Notify the customer",Sue,2024-01-01 01:02:17,Tablet
+10,"Send confirmation",Nina,2024-01-01 01:05:24,Laptop
+90,"Send confirmation",Nina,2024-01-01 01:05:12,Camera
+88,"Archive case",Zoe,2024-01-01 01:05:41,GPS
+47,"Accidental reopen",Liam,2024-01-01 09:00:17,Tablet
+73,"Receive an item and repair request",John,2024-01-01 01:00:20,Camera
+8,"Check the item",Mike,2024-01-01 01:00:38,Camera
+45,"Check the warranty",John,2024-01-01 01:01:18,Tablet
+35,"Check the item",Mike,2024-01-01 01:01:12,GPS
+95,"Notify the customer",Sue,2024-01-01 01:03:04,Mobile Phone
+17,"Notify the customer",Sue,2024-01-01 01:01:19,Tablet
+67,"Check the item",Mike,2024-01-01 01:01:19,Camera
+42,"Validate rules",Nina,2024-01-01 01:03:57,Tablet
+40,"Repair the item",Pete,2024-01-01 01:02:50,GPS
+81,"Check the item",Mike,2024-01-01 01:01:02,Camera
+77,"Check the item",Mike,2024-01-01 01:01:50,Camera
+73,"Notify the customer",Sue,2024-01-01 01:02:36,Camera
+72,"Notify the customer",Sue,2024-01-01 01:01:45,Laptop
+58,"Issue payment",Jane,2024-01-01 01:03:50,Tablet
+53,"Issue payment",Jane,2024-01-01 01:03:18,Tablet
+54,"Duplicate closure",Emma,2024-01-01 09:00:39,Mobile Phone
+37,"Check the warranty",John,2024-01-01 01:01:26,Camera
+38,"Notify the customer",Sue,2024-01-01 01:01:54,Mobile Phone
+40,"Return the item",Sue,2024-01-01 01:03:36,GPS
+90,"Receive an item and repair request",John,2024-01-01 01:00:38,Camera
+33,"Issue payment",Jane,2024-01-01 01:02:43,Mobile Phone
+56,"Issue payment",Jane,2024-01-01 01:02:38,Camera
+65,"Receive an item and repair request",John,2024-01-01 01:00:34,Camera
+23,"Validate rules",Liam,2024-01-01 01:05:28,Laptop
+63,"Check the warranty",John,2024-01-01 01:01:16,GPS
+37,"Receive an item and repair request",John,2024-01-01 01:00:20,Camera
+50,"Return the item",Sue,2024-01-01 01:05:01,Laptop
+100,"Sync database",Emma,2024-01-01 01:03:14,Mobile Phone
+45,"Repair the item",Pete,2024-01-01 01:02:45,Tablet
+80,"Return the item",Sue,2024-01-01 01:04:07,Tablet
+10,"Notify the customer",Sue,2024-01-01 01:02:16,Laptop
+73,"Check the warranty",John,2024-01-01 01:01:53,Camera
+99,"Check the warranty",John,2024-01-01 01:01:40,Camera
+47,"Check the warranty",John,2024-01-01 01:01:37,GPS
+70,"Check the item",Mike,2024-01-01 01:00:39,Mobile Phone
+75,"Repair the item",Pete,2024-01-01 01:02:37,Camera
+13,"Repair the item",Pete,2024-01-01 01:01:47,Camera
+87,"Send notification",Sophia,2024-01-01 01:03:58,Tablet
+67,"Receive an item and repair request",John,2024-01-01 01:00:50,Camera
+44,"Receive an item and repair request",John,2024-01-01 01:00:59,GPS
+86,"Send reminder email",Sophia,2024-01-01 01:05:44,GPS
+77,"Check the warranty",John,2024-01-01 01:02:28,Camera
+78,"Check quality",Ben,2024-01-01 01:03:30,Camera
+56,"Notify the customer",Sue,2024-01-01 01:01:24,Camera
+15,"Update counter",Emma,2024-01-01 01:05:49,Mobile Phone
+1,"Check the item",Mike,2024-01-01 01:01:03,Camera
+13,"Check the warranty",John,2024-01-01 01:01:09,Camera
+44,"Repair the item",Pete,2024-01-01 01:02:02,GPS
+47,"Return the item",Sue,2024-01-01 01:03:55,GPS
+52,"Issue payment",Jane,2024-01-01 01:03:23,Tablet
+23,"Return the item",Sue,2024-01-01 01:04:47,Laptop
+16,"Backup data",Emma,2024-01-01 01:02:39,Tablet
+61,"Import updates",Sophia,2024-01-01 01:04:33,GPS
+14,"Repair the item",Pete,2024-01-01 01:02:15,Camera
+91,"Issue payment",Jane,2024-01-01 01:03:30,Mobile Phone
+43,"Check the item",Mike,2024-01-01 01:00:40,Mobile Phone
+40,"Check the item",Mike,2024-01-01 01:01:11,GPS
+69,"Check the item",Mike,2024-01-01 01:01:47,Laptop
+32,"Check the item",Mike,2024-01-01 01:00:36,Tablet
+96,"Repair the item",Pete,2024-01-01 01:01:38,Mobile Phone
+9,"Repair the item",Pete,2024-01-01 01:02:41,Mobile Phone
+23,"Assign priority",Ryan,2024-01-01 01:04:52,Laptop
+80,"Check the warranty",John,2024-01-01 01:01:44,Tablet
+1,"Check the warranty",John,2024-01-01 01:01:54,Camera
+97,"Generate invoice",Nina,2024-01-01 01:05:20,Tablet
+36,"Receive an item and repair request",John,2024-01-01 01:00:30,Mobile Phone
+32,"Return the item",Sue,2024-01-01 01:03:00,Tablet
+60,"Receive an item and repair request",John,2024-01-01 01:00:26,GPS
+37,"Update inventory",Sophia,2024-01-01 01:05:06,Camera
+25,"Notify the customer",Sue,2024-01-01 01:02:25,Laptop
+90,"Generate ID",Nina,2024-01-01 01:03:33,Camera
+87,"Receive an item and repair request",John,2024-01-01 01:00:52,Tablet
+30,"Check the item",Mike,2024-01-01 01:00:40,Mobile Phone
+51,"Return the item",Sue,2024-01-01 01:02:46,Camera
+59,"Return the item",Sue,2024-01-01 01:04:46,Tablet
+41,"Notify the customer",Sue,2024-01-01 01:02:42,Camera
+78,"Receive an item and repair request",John,2024-01-01 01:00:20,Camera
+100,"Receive an item and repair request",John,2024-01-01 01:00:10,Mobile Phone
+83,"Process billing",Sophia,2024-01-01 01:06:06,Mobile Phone
+71,"Check the warranty",John,2024-01-01 01:01:26,Laptop
+71,"Notify the customer",Sue,2024-01-01 01:01:42,Laptop
+51,"Check the warranty",John,2024-01-01 01:01:03,Camera
+94,"Notify the customer",Sue,2024-01-01 01:02:00,Tablet
+25,"Check the warranty",John,2024-01-01 01:02:02,Laptop
+49,"Notify the customer",Sue,2024-01-01 01:03:24,Laptop
+54,"Repair the item",Pete,2024-01-01 01:01:12,Camera
+30,"Receive an item and repair request",John,2024-01-01 01:00:14,Mobile Phone
+57,"Check the item",Mike,2024-01-01 01:01:20,Camera
+49,"Receive an item and repair request",John,2024-01-01 01:00:45,Laptop
+31,"Repair the item",Pete,2024-01-01 01:03:15,Camera
+42,"Notify the customer",Sue,2024-01-01 01:02:08,Tablet
+90,"Return the item",Sue,2024-01-01 01:02:39,Camera
+54,"Issue payment",Jane,2024-01-01 01:02:10,Camera
+23,"Check compliance",Zoe,2024-01-01 01:06:25,Laptop
+61,"Update configuration",Ben,2024-01-01 01:05:37,GPS
+42,"Check the item",Mike,2024-01-01 01:01:09,Tablet
+17,"Schedule follow-up",Maya,2024-01-01 01:02:45,Tablet
+84,"Check the warranty",John,2024-01-01 01:02:22,Laptop
+23,"Repair the item",Pete,2024-01-01 01:03:32,Laptop
+53,"Check the item",Mike,2024-01-01 01:00:53,Tablet
+41,"Issue payment",Jane,2024-01-01 01:04:34,Camera
+54,"Receive an item and repair request",John,2024-01-01 01:00:15,Camera
+44,"Generate invoice",Oscar,2024-01-01 01:03:19,GPS
+29,"Issue payment",Jane,2024-01-01 01:02:40,GPS
+81,"Notify the customer",Sue,2024-01-01 01:01:35,Camera
+100,"Update status",Liam,2024-01-01 01:05:39,Mobile Phone
+32,"Receive an item and repair request",John,2024-01-01 01:00:27,Tablet
+12,"Update calendar",Nina,2024-01-01 01:04:43,Camera
+37,"Notify the customer",Sue,2024-01-01 01:02:06,Camera
+73,"Check the item",Mike,2024-01-01 01:01:08,Camera
+75,"Receive an item and repair request",John,2024-01-01 01:00:13,Camera
+43,"Return the item",Sue,2024-01-01 01:04:42,Mobile Phone
+53,"Check the warranty",John,2024-01-01 01:01:50,Tablet
+21,"Update database",Maya,2024-01-01 01:05:30,Tablet
+49,"Check the warranty",John,2024-01-01 01:02:42,Laptop
+79,"Issue payment",Jane,2024-01-01 01:03:37,GPS
+82,"Issue payment",Jane,2024-01-01 01:03:15,Camera
+88,"Return the item",Sue,2024-01-01 01:03:14,GPS
+24,"Review case notes",Ben,2024-01-01 01:05:31,Mobile Phone
+31,"Notify the customer",Sue,2024-01-01 01:02:35,Camera
+96,"Check the warranty",John,2024-01-01 01:00:47,Mobile Phone
+13,"Process transaction",Sophia,2024-01-01 01:03:55,Camera
+56,"Receive an item and repair request",John,2024-01-01 01:00:17,Camera
+14,"Notify the customer",Sue,2024-01-01 01:02:01,Camera
+98,"Repair the item",Pete,2024-01-01 01:03:09,Tablet
+64,"Archive case",Sophia,2024-01-01 01:03:28,Camera
+90,"Issue payment",Jane,2024-01-01 01:02:12,Camera
+13,"Receive an item and repair request",John,2024-01-01 01:00:22,Camera
+20,"Repair the item",Pete,2024-01-01 01:02:39,Laptop
+12,"Repair the item",Pete,2024-01-01 01:02:15,Camera
+70,"Receive an item and repair request",John,2024-01-01 01:00:05,Mobile Phone
+92,"Schedule follow-up",Oscar,2024-01-01 01:05:14,GPS
+2,"Check the item",Mike,2024-01-01 01:01:16,GPS
+87,"Check threshold",Oscar,2024-01-01 01:04:13,Tablet
+83,"Check the item",Mike,2024-01-01 01:01:48,Mobile Phone
+24,"Notify the customer",Sue,2024-01-01 01:02:37,Mobile Phone
+46,"Validate data",Ben,2024-01-01 01:06:17,GPS
+11,"Repair the item",Pete,2024-01-01 01:02:21,Tablet
+65,"Check the item",Mike,2024-01-01 01:01:11,Camera
+16,"Issue payment",Jane,2024-01-01 01:02:23,Tablet
+21,"Check the warranty",John,2024-01-01 01:02:07,Tablet
+72,"Repair the item",Pete,2024-01-01 01:02:10,Laptop
+79,"Update customer record",Alex,2024-01-01 01:05:27,GPS
+44,"Return the item",Sue,2024-01-01 01:02:53,GPS
+72,"Receive an item and repair request",John,2024-01-01 01:00:12,Laptop
+15,"Notify the customer",Sue,2024-01-01 01:01:39,Mobile Phone
+66,"Update inventory",Alex,2024-01-01 01:05:42,Mobile Phone
+6,"Repair the item",Pete,2024-01-01 01:02:54,Mobile Phone
+79,"Receive an item and repair request",John,2024-01-01 01:00:29,GPS
+17,"Issue payment",Jane,2024-01-01 01:01:38,Tablet
+98,"Generate ID",Ryan,2024-01-01 01:04:30,Tablet
+60,"Review case notes",Ryan,2024-01-01 01:05:07,GPS
+58,"Notify the customer",Sue,2024-01-01 01:02:43,Tablet
+27,"Update metadata",Alex,2024-01-01 01:05:07,Camera
+8,"Return the item",Sue,2024-01-01 01:03:53,Camera
+6,"Send reminder email",Zoe,2024-01-01 01:04:34,Mobile Phone
+33,"Check connectivity",Zoe,2024-01-01 01:03:57,Mobile Phone
+94,"Return the item",Sue,2024-01-01 01:04:19,Tablet
+9,"Check the warranty",John,2024-01-01 01:01:53,Mobile Phone
+66,"Issue payment",Jane,2024-01-01 01:02:46,Mobile Phone
+82,"Repair the item",Pete,2024-01-01 01:02:47,Camera
+78,"Check the item",Mike,2024-01-01 01:00:29,Camera
+85,"Notify the customer",Sue,2024-01-01 01:02:30,Mobile Phone
+46,"Notify the customer",Sue,2024-01-01 01:02:05,GPS
+82,"Notify the customer",Sue,2024-01-01 01:02:05,Camera
+36,"Check quality",Liam,2024-01-01 01:04:33,Mobile Phone
+69,"Check the warranty",John,2024-01-01 01:02:42,Laptop
+31,"Update inventory",Sophia,2024-01-01 01:05:17,Camera
+4,"Contact supplier",Zoe,2024-01-01 01:03:35,Camera
+24,"Check the warranty",John,2024-01-01 01:01:49,Mobile Phone
+31,"Import updates",Maya,2024-01-01 01:07:10,Camera
+62,"Receive an item and repair request",John,2024-01-01 01:00:23,Camera
+86,"Review logs",Zoe,2024-01-01 01:06:14,GPS
+62,"Return the item",Sue,2024-01-01 01:03:52,Camera
+67,"Process billing",Sophia,2024-01-01 01:04:39,Camera
+10,"Check the warranty",John,2024-01-01 01:01:53,Laptop
+34,"Check the warranty",John,2024-01-01 01:01:26,Laptop
+98,"Issue payment",Jane,2024-01-01 01:03:47,Tablet
+22,"Notify the customer",Sue,2024-01-01 01:01:22,Tablet
+31,"Issue payment",Jane,2024-01-01 01:03:59,Camera
+1,"Receive an item and repair request",John,2024-01-01 01:00:51,Camera
+56,"Check the item",Mike,2024-01-01 01:00:30,Camera
+91,"Check the item",Mike,2024-01-01 01:01:06,Mobile Phone
+73,"Repair the item",Pete,2024-01-01 01:02:47,Camera
+98,"Check the warranty",John,2024-01-01 01:01:23,Tablet
+96,"Issue payment",Jane,2024-01-01 01:01:45,Mobile Phone
+75,"Issue payment",Jane,2024-01-01 01:02:59,Camera
+83,"Check quality",Maya,2024-01-01 01:06:01,Mobile Phone
+82,"Receive an item and repair request",John,2024-01-01 01:00:41,Camera
+70,"Issue payment",Jane,2024-01-01 01:02:50,Mobile Phone
+15,"Update preferences",Ben,2024-01-01 01:03:52,Mobile Phone
+75,"Check the item",Mike,2024-01-01 01:01:10,Camera
+21,"Notify the customer",Sue,2024-01-01 01:02:29,Tablet
+84,"Update inventory",Ben,2024-01-01 01:05:50,Laptop
+46,"Review logs",Ben,2024-01-01 01:05:31,GPS
+5,"Update preferences",Maya,2024-01-01 01:05:54,Mobile Phone
+38,"Validate input",Maya,2024-01-01 01:05:12,Mobile Phone
+46,"Issue payment",Jane,2024-01-01 01:03:34,GPS
+83,"Verify payment",Sophia,2024-01-01 01:07:07,Mobile Phone
+52,"Process refund",Zoe,2024-01-01 01:06:09,Tablet
+65,"Repair the item",Pete,2024-01-01 01:03:20,Camera
+55,"Notify the customer",Sue,2024-01-01 01:02:17,Laptop
+59,"Repair the item",Pete,2024-01-01 01:03:50,Tablet
+45,"Log maintenance",Ryan,2024-01-01 01:03:19,Tablet
+14,"Check system status",Oscar,2024-01-01 01:04:07,Camera
+89,"Repair the item",Pete,2024-01-01 01:02:55,Tablet
+85,"Check the warranty",John,2024-01-01 01:02:10,Mobile Phone
+47,"Repair the item",Pete,2024-01-01 01:02:47,GPS
+2,"Notify the customer",Sue,2024-01-01 01:02:12,GPS
+59,"Check system status",Ryan,2024-01-01 01:07:25,Tablet
+55,"Issue payment",Jane,2024-01-01 01:03:17,Laptop
+64,"Issue payment",Jane,2024-01-01 01:02:15,Camera
+63,"Repair the item",Pete,2024-01-01 01:01:52,GPS
+50,"Verify payment",Zoe,2024-01-01 01:06:52,Laptop
+87,"Repair the item",Pete,2024-01-01 01:02:32,Tablet
+34,"Check threshold",Emma,2024-01-01 01:03:13,Laptop
+9,"Issue payment",Jane,2024-01-01 01:03:33,Mobile Phone
+35,"Issue payment",Jane,2024-01-01 01:03:24,GPS
+84,"Check the item",Mike,2024-01-01 01:01:48,Laptop
+5,"Receive an item and repair request",John,2024-01-01 01:00:46,Mobile Phone
+6,"Notify the customer",Sue,2024-01-01 01:02:30,Mobile Phone
+6,"Receive an item and repair request",John,2024-01-01 01:00:49,Mobile Phone
+50,"Import updates",Liam,2024-01-01 01:07:12,Laptop
+33,"Repair the item",Pete,2024-01-01 01:02:14,Mobile Phone
+76,"Receive an item and repair request",John,2024-01-01 01:00:27,Mobile Phone
+11,"Update database",Ryan,2024-01-01 01:03:02,Tablet
+28,"Receive an item and repair request",John,2024-01-01 01:00:46,GPS
+60,"Send confirmation",Ben,2024-01-01 01:05:27,GPS
+72,"Check the item",Mike,2024-01-01 01:00:28,Laptop
+71,"Receive an item and repair request",John,2024-01-01 01:00:11,Laptop
+54,"Return the item",Sue,2024-01-01 01:03:04,Camera
+58,"Receive an item and repair request",John,2024-01-01 01:00:37,Tablet
+43,"Send reminder email",Maya,2024-01-01 01:05:04,Mobile Phone
+3,"Notify the customer",Sue,2024-01-01 01:03:11,Camera
+86,"Receive an item and repair request",John,2024-01-01 01:00:47,GPS
+29,"Check the warranty",John,2024-01-01 01:01:31,GPS
+74,"Send confirmation",Ben,2024-01-01 01:04:40,Tablet
+84,"Receive an item and repair request",John,2024-01-01 01:00:51,Laptop
+75,"Clear cache",Sophia,2024-01-01 01:03:31,Camera
+27,"Receive an item and repair request",John,2024-01-01 01:00:39,Camera
+60,"Issue payment",Jane,2024-01-01 01:03:01,GPS
+30,"Validate input",Alex,2024-01-01 01:04:00,Mobile Phone
+88,"Receive an item and repair request",John,2024-01-01 01:00:57,GPS
+12,"Check the warranty",John,2024-01-01 01:01:11,Camera
+72,"Return the item",Sue,2024-01-01 01:03:25,Laptop
+68,"Process batch",Oscar,2024-01-01 01:05:26,Camera
+28,"Issue payment",Jane,2024-01-01 01:03:19,GPS
+43,"Notify the customer",Sue,2024-01-01 01:02:38,Mobile Phone
+63,"Return the item",Sue,2024-01-01 01:03:34,GPS
+43,"Repair the item",Pete,2024-01-01 01:03:09,Mobile Phone
+42,"Receive an item and repair request",John,2024-01-01 01:00:35,Tablet
+47,"Receive an item and repair request",John,2024-01-01 01:00:56,GPS
+88,"Generate ID",Liam,2024-01-01 01:04:06,GPS
+61,"Update calendar",Ryan,2024-01-01 01:04:51,GPS
+79,"Repair the item",Pete,2024-01-01 01:03:21,GPS
+3,"Return the item",Sue,2024-01-01 01:05:08,Camera
+99,"Check the item",Mike,2024-01-01 01:00:57,Camera
+12,"Receive an item and repair request",John,2024-01-01 01:00:19,Camera
+98,"Check connectivity",Nina,2024-01-01 01:04:51,Tablet
+65,"Check the warranty",John,2024-01-01 01:01:55,Camera
+83,"Notify the customer",Sue,2024-01-01 01:03:37,Mobile Phone
+52,"Review metrics",Ryan,2024-01-01 01:04:40,Tablet
+5,"Update configuration",Sophia,2024-01-01 01:06:34,Mobile Phone
+52,"Receive an item and repair request",John,2024-01-01 01:00:56,Tablet
+90,"Validate input",Liam,2024-01-01 01:05:41,Camera
+70,"Return the item",Sue,2024-01-01 01:03:47,Mobile Phone
+49,"Issue payment",Jane,2024-01-01 01:04:31,Laptop
+31,"Receive an item and repair request",John,2024-01-01 01:00:34,Camera
+87,"Return the item",Sue,2024-01-01 01:03:10,Tablet
+53,"Receive an item and repair request",John,2024-01-01 01:00:07,Tablet
+1,"Return the item",Sue,2024-01-01 01:04:24,Camera
+46,"Receive an item and repair request",John,2024-01-01 01:00:54,GPS
+11,"Check the warranty",John,2024-01-01 01:01:43,Tablet
+8,"Notify the customer",Sue,2024-01-01 01:02:08,Camera
+39,"Receive an item and repair request",John,2024-01-01 01:00:38,Camera
+1,"Repair the item",Pete,2024-01-01 01:02:46,Camera
+47,"Notify the customer",Sue,2024-01-01 01:01:49,GPS
+59,"Process billing",Sophia,2024-01-01 01:06:20,Tablet
+29,"Notify the customer",Sue,2024-01-01 01:01:40,GPS
+47,"Issue payment",Jane,2024-01-01 01:03:29,GPS
+4,"Issue payment",Jane,2024-01-01 01:02:44,Camera
+57,"Audit trail",Oscar,2024-01-01 01:05:25,Camera
+36,"Check the item",Mike,2024-01-01 01:00:58,Mobile Phone
+5,"Return the item",Sue,2024-01-01 01:05:06,Mobile Phone
+7,"Repair the item",Pete,2024-01-01 01:03:31,GPS
+48,"Notify the customer",Sue,2024-01-01 01:02:51,Laptop
+24,"Repair the item",Pete,2024-01-01 01:03:34,Mobile Phone
+15,"Issue payment",Jane,2024-01-01 01:02:35,Mobile Phone
+28,"Check the warranty",John,2024-01-01 01:01:50,GPS
+61,"Notify the customer",Sue,2024-01-01 01:01:46,GPS
+81,"Repair the item",Pete,2024-01-01 01:02:07,Camera
+13,"Notify the customer",Sue,2024-01-01 01:01:41,Camera
+100,"Return the item",Sue,2024-01-01 01:02:40,Mobile Phone
+26,"Check the warranty",John,2024-01-01 01:01:19,Laptop
+24,"Issue payment",Jane,2024-01-01 01:03:58,Mobile Phone
+60,"Repair the item",Pete,2024-01-01 01:02:50,GPS
+59,"Issue payment",Jane,2024-01-01 01:04:11,Tablet
+10,"Repair the item",Pete,2024-01-01 01:03:13,Laptop
+39,"Check the warranty",John,2024-01-01 01:01:58,Camera
+65,"Return the item",Sue,2024-01-01 01:03:57,Camera
+21,"Validate rules",Maya,2024-01-01 01:06:12,Tablet
+40,"Receive an item and repair request",John,2024-01-01 01:00:38,GPS
+33,"Send newsletter",Liam,2024-01-01 01:03:37,Mobile Phone
+80,"Process batch",Zoe,2024-01-01 01:04:36,Tablet
+7,"Return the item",Sue,2024-01-01 01:03:52,GPS
+18,"Return the item",Sue,2024-01-01 01:04:24,Laptop
+65,"Contact supplier",Alex,2024-01-01 01:04:33,Camera
+63,"Issue payment",Jane,2024-01-01 01:02:45,GPS
+84,"Repair the item",Pete,2024-01-01 01:04:11,Laptop
+22,"Repair the item",Pete,2024-01-01 01:02:17,Tablet
+22,"Receive an item and repair request",John,2024-01-01 01:00:06,Tablet
+55,"Check the item",Mike,2024-01-01 01:00:56,Laptop
+18,"Repair the item",Pete,2024-01-01 01:02:46,Laptop
+62,"Check the item",Mike,2024-01-01 01:00:44,Camera
+100,"Verify payment",Sophia,2024-01-01 01:04:12,Mobile Phone
+9,"Receive an item and repair request",John,2024-01-01 01:00:34,Mobile Phone
+62,"Repair the item",Pete,2024-01-01 01:03:10,Camera
+23,"Check the warranty",John,2024-01-01 01:02:15,Laptop
+21,"Issue payment",Jane,2024-01-01 01:03:22,Tablet
+4,"Receive an item and repair request",John,2024-01-01 01:00:33,Camera
+45,"Issue payment",Jane,2024-01-01 01:02:51,Tablet
+32,"Check the warranty",John,2024-01-01 01:00:58,Tablet
+72,"Issue payment",Jane,2024-01-01 01:02:27,Laptop
+88,"Check the warranty",John,2024-01-01 01:01:58,GPS
+65,"Issue payment",Jane,2024-01-01 01:03:27,Camera
+55,"Check the warranty",John,2024-01-01 01:01:43,Laptop
+46,"Check the warranty",John,2024-01-01 01:01:17,GPS
+99,"Issue payment",Jane,2024-01-01 01:04:35,Camera
+5,"Issue payment",Jane,2024-01-01 01:04:16,Mobile Phone
+59,"Generate ID",Alex,2024-01-01 01:07:08,Tablet
+13,"Generate report",Ryan,2024-01-01 01:03:06,Camera
+17,"Check the warranty",John,2024-01-01 01:00:32,Tablet
+65,"Notify the customer",Sue,2024-01-01 01:02:55,Camera
+58,"Check the item",Mike,2024-01-01 01:01:17,Tablet
+66,"Repair the item",Pete,2024-01-01 01:02:25,Mobile Phone
+46,"Check dependencies",Maya,2024-01-01 01:06:07,GPS
+54,"Check the item",Mike,2024-01-01 01:00:25,Camera
+94,"Check connectivity",Oscar,2024-01-01 01:05:56,Tablet
+62,"Check the warranty",John,2024-01-01 01:01:19,Camera
+84,"Notify the customer",Sue,2024-01-01 01:03:17,Laptop
+95,"Check the warranty",John,2024-01-01 01:02:05,Mobile Phone
+32,"Issue payment",Jane,2024-01-01 01:02:20,Tablet
+43,"Receive an item and repair request",John,2024-01-01 01:00:15,Mobile Phone
+49,"Check the item",Mike,2024-01-01 01:01:43,Laptop
+79,"Check system status",Ryan,2024-01-01 01:06:01,GPS
+10,"Check the item",Mike,2024-01-01 01:01:08,Laptop
+26,"Update warranty status",Emma,2024-01-01 01:03:35,Laptop
+25,"Repair the item",Pete,2024-01-01 01:03:12,Laptop
+36,"Issue payment",Jane,2024-01-01 01:03:03,Mobile Phone
+20,"Check the item",Mike,2024-01-01 01:00:34,Laptop
+39,"Issue payment",Jane,2024-01-01 01:03:26,Camera
+39,"Repair the item",Pete,2024-01-01 01:03:13,Camera
+97,"Check the item",Mike,2024-01-01 01:00:28,Tablet
+81,"Receive an item and repair request",John,2024-01-01 01:00:31,Camera
+15,"Check the item",Mike,2024-01-01 01:00:57,Mobile Phone
+90,"Notify the customer",Sue,2024-01-01 01:01:21,Camera
+40,"Issue payment",Jane,2024-01-01 01:03:15,GPS
+42,"Check the warranty",John,2024-01-01 01:01:14,Tablet
+74,"Notify the customer",Sue,2024-01-01 01:02:05,Tablet
+24,"Check the item",Mike,2024-01-01 01:01:15,Mobile Phone
+59,"Check dependencies",Nina,2024-01-01 01:05:26,Tablet
+60,"Update calendar",Sophia,2024-01-01 01:03:45,GPS
+93,"Check the item",Mike,2024-01-01 01:00:43,Mobile Phone
+32,"Repair the item",Pete,2024-01-01 01:01:52,Tablet
+31,"Check the warranty",John,2024-01-01 01:02:27,Camera
+96,"Check the item",Mike,2024-01-01 01:00:41,Mobile Phone
+2,"Issue payment",Jane,2024-01-01 01:03:31,GPS
+48,"Repair the item",Pete,2024-01-01 01:03:07,Laptop
+9,"Notify the customer",Sue,2024-01-01 01:02:21,Mobile Phone
+72,"Check the warranty",John,2024-01-01 01:01:15,Laptop
+95,"Check connectivity",Ben,2024-01-01 01:05:29,Mobile Phone
+51,"Receive an item and repair request",John,2024-01-01 01:00:44,Camera
+77,"Notify the customer",Sue,2024-01-01 01:03:25,Camera
+83,"Repair the item",Pete,2024-01-01 01:04:09,Mobile Phone
+12,"Check the item",Mike,2024-01-01 01:00:48,Camera
+22,"Issue payment",Jane,2024-01-01 01:03:16,Tablet
+77,"Receive an item and repair request",John,2024-01-01 01:00:57,Camera
+79,"Check the item",Mike,2024-01-01 01:01:26,GPS
+97,"Archive case",Sophia,2024-01-01 01:04:31,Tablet
+50,"Check the item",Mike,2024-01-01 01:01:22,Laptop
+52,"Monitor performance",Oscar,2024-01-01 01:04:55,Tablet
+34,"Issue payment",Jane,2024-01-01 01:02:18,Laptop
+23,"Issue payment",Jane,2024-01-01 01:03:53,Laptop
+6,"Issue payment",Jane,2024-01-01 01:03:12,Mobile Phone
+98,"Receive an item and repair request",John,2024-01-01 01:00:27,Tablet
+29,"Return the item",Sue,2024-01-01 01:03:31,GPS
+37,"Issue payment",Jane,2024-01-01 01:03:29,Camera
+67,"Check the warranty",John,2024-01-01 01:02:19,Camera
+40,"Check the warranty",John,2024-01-01 01:01:51,GPS
+98,"Check the item",Mike,2024-01-01 01:01:00,Tablet
+64,"Update preferences",Emma,2024-01-01 01:03:36,Camera
+55,"Receive an item and repair request",John,2024-01-01 01:00:18,Laptop
+5,"Notify the customer",Sue,2024-01-01 01:02:26,Mobile Phone
+81,"Sync database",Alex,2024-01-01 01:05:34,Camera
+19,"Check the item",Mike,2024-01-01 01:01:06,Mobile Phone
+24,"Return the item",Sue,2024-01-01 01:04:54,Mobile Phone
+21,"Return the item",Sue,2024-01-01 01:04:01,Tablet
+57,"Issue payment",Jane,2024-01-01 01:02:59,Camera
+11,"Notify the customer",Sue,2024-01-01 01:01:48,Tablet
+30,"Repair the item",Pete,2024-01-01 01:01:56,Mobile Phone
+92,"Check permissions",Liam,2024-01-01 01:06:30,GPS
+66,"Process batch",Maya,2024-01-01 01:04:52,Mobile Phone
+73,"Issue payment",Jane,2024-01-01 01:03:18,Camera
+87,"Notify the customer",Sue,2024-01-01 01:02:06,Tablet
+93,"Update database",Maya,2024-01-01 01:04:32,Mobile Phone
+95,"Return the item",Sue,2024-01-01 01:04:59,Mobile Phone
+16,"Check the warranty",John,2024-01-01 01:01:10,Tablet
+89,"Check the warranty",John,2024-01-01 01:02:13,Tablet
+76,"Repair the item",Pete,2024-01-01 01:02:50,Mobile Phone
+91,"Receive an item and repair request",John,2024-01-01 01:00:58,Mobile Phone
+97,"Repair the item",Pete,2024-01-01 01:02:30,Tablet
+25,"Return the item",Sue,2024-01-01 01:04:55,Laptop
+52,"Check the warranty",John,2024-01-01 01:02:07,Tablet
+38,"Return the item",Sue,2024-01-01 01:03:12,Mobile Phone
+63,"Receive an item and repair request",John,2024-01-01 01:00:05,GPS
+67,"Check quality",Sophia,2024-01-01 01:05:00,Camera
+8,"Repair the item",Pete,2024-01-01 01:02:16,Camera
+3,"Receive an item and repair request",John,2024-01-01 01:00:47,Camera
+57,"Receive an item and repair request",John,2024-01-01 01:00:41,Camera
+8,"Check connectivity",Ryan,2024-01-01 01:04:40,Camera
+96,"Receive an item and repair request",John,2024-01-01 01:00:21,Mobile Phone
+88,"Check the item",Mike,2024-01-01 01:01:52,GPS
+60,"Check the warranty",John,2024-01-01 01:01:18,GPS
+83,"Check the warranty",John,2024-01-01 01:02:38,Mobile Phone
+77,"Send newsletter",Alex,2024-01-01 01:05:42,Camera
+98,"Process refund",Nina,2024-01-01 01:05:46,Tablet
+70,"Check system status",Ben,2024-01-01 01:04:23,Mobile Phone
+28,"Notify the customer",Sue,2024-01-01 01:02:18,GPS
+52,"Check the item",Mike,2024-01-01 01:01:28,Tablet
+48,"Issue payment",Jane,2024-01-01 01:03:55,Laptop
+61,"Receive an item and repair request",John,2024-01-01 01:00:07,GPS
+36,"Repair the item",Pete,2024-01-01 01:02:24,Mobile Phone
+68,"Return the item",Sue,2024-01-01 01:04:02,Camera
+50,"Repair the item",Pete,2024-01-01 01:03:32,Laptop
+29,"Check quality",Maya,2024-01-01 01:05:28,GPS
+7,"Check system status",Zoe,2024-01-01 01:04:00,GPS
+48,"Check the warranty",John,2024-01-01 01:02:01,Laptop
+22,"Send newsletter",Sophia,2024-01-01 01:07:04,Tablet
+10,"Return the item",Sue,2024-01-01 01:04:19,Laptop
+4,"Check the item",Mike,2024-01-01 01:00:38,Camera
+15,"Repair the item",Pete,2024-01-01 01:02:05,Mobile Phone
+17,"Return the item",Sue,2024-01-01 01:02:24,Tablet
+68,"Review logs",Emma,2024-01-01 01:04:39,Camera
+65,"Send satisfaction survey",Sophia,2024-01-01 01:05:15,Camera
+95,"Check the item",Mike,2024-01-01 01:01:31,Mobile Phone
+84,"Return the item",Sue,2024-01-01 01:05:15,Laptop
+68,"Check the item",Mike,2024-01-01 01:01:02,Camera
+44,"Check the item",Mike,2024-01-01 01:01:18,GPS
+4,"Notify the customer",Sue,2024-01-01 01:01:32,Camera
+34,"Receive an item and repair request",John,2024-01-01 01:00:17,Laptop
+38,"Receive an item and repair request",John,2024-01-01 01:00:16,Mobile Phone
+41,"Return the item",Sue,2024-01-01 01:05:04,Camera
+100,"Send alert",Ryan,2024-01-01 01:05:07,Mobile Phone
+81,"Issue payment",Jane,2024-01-01 01:02:29,Camera
+36,"Check compliance",Zoe,2024-01-01 01:05:30,Mobile Phone
+86,"Notify the customer",Sue,2024-01-01 01:02:56,GPS
+29,"Receive an item and repair request",John,2024-01-01 01:00:30,GPS
+37,"Sync database",Ben,2024-01-01 01:05:53,Camera
+66,"Check the item",Mike,2024-01-01 01:01:31,Mobile Phone
+21,"Process batch",Alex,2024-01-01 01:05:50,Tablet
+15,"Return the item",Sue,2024-01-01 01:02:55,Mobile Phone
+51,"Check the item",Mike,2024-01-01 01:00:53,Camera
+27,"Repair the item",Pete,2024-01-01 01:03:24,Camera
+80,"Notify the customer",Sue,2024-01-01 01:02:17,Tablet
+97,"Return the item",Sue,2024-01-01 01:03:59,Tablet
+49,"Repair the item",Pete,2024-01-01 01:04:15,Laptop
+21,"Check the item",Mike,2024-01-01 01:01:34,Tablet
+34,"Return the item",Sue,2024-01-01 01:03:02,Laptop
+67,"Repair the item",Pete,2024-01-01 01:02:53,Camera
+11,"Process refund",Alex,2024-01-01 01:03:36,Tablet
+46,"Return the item",Sue,2024-01-01 01:03:51,GPS
+26,"Return the item",Sue,2024-01-01 01:03:10,Laptop
+94,"Review logs",Maya,2024-01-01 01:05:25,Tablet
+42,"Check threshold",Sophia,2024-01-01 01:04:09,Tablet
+8,"Check the warranty",John,2024-01-01 01:01:15,Camera
+86,"Check the item",Mike,2024-01-01 01:01:42,GPS
+27,"Check the item",Mike,2024-01-01 01:01:21,Camera
+59,"Check the item",Mike,2024-01-01 01:01:34,Tablet
+18,"Check the warranty",John,2024-01-01 01:01:15,Laptop
+92,"Check the item",Mike,2024-01-01 01:01:16,GPS
+68,"Receive an item and repair request",John,2024-01-01 01:00:30,Camera
+81,"Return the item",Sue,2024-01-01 01:03:17,Camera
+50,"Receive an item and repair request",John,2024-01-01 01:00:28,Laptop
+19,"Receive an item and repair request",John,2024-01-01 01:00:12,Mobile Phone
+79,"Check the warranty",John,2024-01-01 01:01:55,GPS
+43,"Issue payment",Jane,2024-01-01 01:04:00,Mobile Phone
+30,"Send reminder email",Sophia,2024-01-01 01:04:58,Mobile Phone
+49,"Monitor performance",Maya,2024-01-01 01:05:40,Laptop
+28,"Check the item",Mike,2024-01-01 01:01:26,GPS
+11,"Return the item",Sue,2024-01-01 01:02:51,Tablet
+89,"Check the item",Mike,2024-01-01 01:01:41,Tablet
+95,"Issue payment",Jane,2024-01-01 01:04:10,Mobile Phone
+81,"Check the warranty",John,2024-01-01 01:01:14,Camera
+5,"Check the warranty",John,2024-01-01 01:02:06,Mobile Phone
+91,"Repair the item",Pete,2024-01-01 01:02:38,Mobile Phone
+15,"Send notification",Ryan,2024-01-01 01:04:41,Mobile Phone
+6,"Check the warranty",John,2024-01-01 01:02:03,Mobile Phone
+88,"Repair the item",Pete,2024-01-01 01:02:35,GPS
+89,"Receive an item and repair request",John,2024-01-01 01:00:45,Tablet
+91,"Check the warranty",John,2024-01-01 01:01:20,Mobile Phone
+32,"Notify the customer",Sue,2024-01-01 01:01:09,Tablet
+24,"Assign priority",Ryan,2024-01-01 01:05:02,Mobile Phone
+7,"Check the warranty",John,2024-01-01 01:02:00,GPS
+35,"Repair the item",Pete,2024-01-01 01:03:12,GPS
+27,"Notify the customer",Sue,2024-01-01 01:03:04,Camera
+22,"Check the warranty",John,2024-01-01 01:00:32,Tablet
+85,"Receive an item and repair request",John,2024-01-01 01:00:56,Mobile Phone
+83,"Return the item",Sue,2024-01-01 01:05:51,Mobile Phone
+74,"Repair the item",Pete,2024-01-01 01:02:35,Tablet
+42,"Issue payment",Jane,2024-01-01 01:02:56,Tablet
+38,"Issue payment",Jane,2024-01-01 01:02:54,Mobile Phone
+52,"Send notification",Liam,2024-01-01 01:05:41,Tablet
+13,"Process billing",Ben,2024-01-01 01:04:01,Camera
+82,"Check the warranty",John,2024-01-01 01:01:29,Camera
+15,"Audit trail",Maya,2024-01-01 01:05:40,Mobile Phone
+66,"Check the warranty",John,2024-01-01 01:01:47,Mobile Phone
+97,"Receive an item and repair request",John,2024-01-01 01:00:08,Tablet
+27,"Issue payment",Jane,2024-01-01 01:04:01,Camera
+65,"Validate input",Zoe,2024-01-01 01:04:24,Camera
+59,"Receive an item and repair request",John,2024-01-01 01:00:41,Tablet
+19,"Log activity",Alex,2024-01-01 01:04:31,Mobile Phone
+56,"Repair the item",Pete,2024-01-01 01:02:03,Camera
+3,"Repair the item",Pete,2024-01-01 01:03:54,Camera
+19,"Repair the item",Pete,2024-01-01 01:02:38,Mobile Phone
+62,"Issue payment",Jane,2024-01-01 01:03:28,Camera
+33,"Return the item",Sue,2024-01-01 01:03:29,Mobile Phone
+31,"Return the item",Sue,2024-01-01 01:04:24,Camera
+7,"Notify the customer",Sue,2024-01-01 01:03:00,GPS
+13,"Issue payment",Jane,2024-01-01 01:01:52,Camera
+31,"Audit trail",Zoe,2024-01-01 01:06:11,Camera
+47,"Check the item",Mike,2024-01-01 01:01:03,GPS
+83,"Create backup",Ben,2024-01-01 01:06:39,Mobile Phone
+69,"Notify the customer",Sue,2024-01-01 01:03:24,Laptop
+89,"Return the item",Sue,2024-01-01 01:04:17,Tablet
+60,"Return the item",Sue,2024-01-01 01:03:08,GPS
+95,"Receive an item and repair request",John,2024-01-01 01:00:40,Mobile Phone
+33,"Receive an item and repair request",John,2024-01-01 01:00:32,Mobile Phone
+42,"Repair the item",Pete,2024-01-01 01:02:32,Tablet
+15,"Receive an item and repair request",John,2024-01-01 01:00:28,Mobile Phone
+61,"Return the item",Sue,2024-01-01 01:03:51,GPS
+99,"Receive an item and repair request",John,2024-01-01 01:00:48,Camera
+45,"Return the item",Sue,2024-01-01 01:03:02,Tablet
+51,"Notify the customer",Sue,2024-01-01 01:01:11,Camera
+11,"Receive an item and repair request",John,2024-01-01 01:00:35,Tablet
+75,"Return the item",Sue,2024-01-01 01:03:13,Camera
+87,"Check the item",Mike,2024-01-01 01:01:20,Tablet
+17,"Check the item",Mike,2024-01-01 01:00:27,Tablet
+29,"Create backup",Ryan,2024-01-01 01:03:57,GPS
+100,"Check the item",Mike,2024-01-01 01:00:24,Mobile Phone
+59,"Survey request",Oscar,2024-01-01 09:00:22,Laptop
+71,"Issue payment",Jane,2024-01-01 01:02:58,Laptop
+99,"Notify the customer",Sue,2024-01-01 01:02:36,Camera
+55,"Validate input",Emma,2024-01-01 01:04:28,Laptop
+96,"Return the item",Sue,2024-01-01 01:02:30,Mobile Phone
+81,"Contact supplier",Maya,2024-01-01 01:04:11,Camera
+26,"Unexpected escalation",Sophia,2024-01-01 09:00:51,GPS
+45,"Check the item",Mike,2024-01-01 01:01:01,Tablet
+78,"Issue payment",Jane,2024-01-01 01:02:20,Camera
+93,"Receive an item and repair request",John,2024-01-01 01:00:26,Mobile Phone
+26,"Check the item",Mike,2024-01-01 01:00:41,Laptop
+14,"Receive an item and repair request",John,2024-01-01 01:00:39,Camera
+92,"Repair the item",Pete,2024-01-01 01:02:32,GPS
+10,"Update configuration",Sophia,2024-01-01 01:04:58,Laptop
+91,"Return the item",Sue,2024-01-01 01:03:39,Mobile Phone
+20,"Check the warranty",John,2024-01-01 01:01:02,Laptop
+1,"Check compliance",Nina,2024-01-01 01:04:44,Camera
+24,"Receive an item and repair request",John,2024-01-01 01:00:23,Mobile Phone
+69,"Send reminder email",Ben,2024-01-01 01:05:02,Laptop
+89,"Notify the customer",Sue,2024-01-01 01:02:36,Tablet
+36,"Notify the customer",Sue,2024-01-01 01:02:02,Mobile Phone
+27,"Return the item",Sue,2024-01-01 01:04:45,Camera
+19,"Generate report",Nina,2024-01-01 01:05:50,Mobile Phone
+16,"Repair the item",Pete,2024-01-01 01:01:56,Tablet
+25,"Receive an item and repair request",John,2024-01-01 01:00:21,Laptop
+80,"Update database",Maya,2024-01-01 01:05:03,Tablet
+76,"Notify the customer",Sue,2024-01-01 01:02:06,Mobile Phone
+12,"Review metrics",Ben,2024-01-01 01:05:17,Camera
+74,"Return the item",Sue,2024-01-01 01:03:50,Tablet
+63,"Check the item",Mike,2024-01-01 01:01:04,GPS
+41,"Check the warranty",John,2024-01-01 01:01:58,Camera
+20,"Receive an item and repair request",John,2024-01-01 01:00:07,Laptop
+55,"Repair the item",Pete,2024-01-01 01:02:53,Laptop
+79,"Notify the customer",Sue,2024-01-01 01:02:24,GPS
+74,"Issue payment",Jane,2024-01-01 01:03:13,Tablet
+28,"Return the item",Sue,2024-01-01 01:03:59,GPS
+77,"Issue payment",Jane,2024-01-01 01:04:33,Camera
+2,"Return the item",Sue,2024-01-01 01:04:26,GPS
+2,"Create backup",Sophia,2024-01-01 01:05:10,GPS
+28,"Import updates",Oscar,2024-01-01 01:04:17,GPS
+76,"Import updates",Nina,2024-01-01 01:05:33,Mobile Phone
+58,"Repair the item",Pete,2024-01-01 01:03:05,Tablet
+85,"Check the item",Mike,2024-01-01 01:01:29,Mobile Phone
+42,"Return the item",Sue,2024-01-01 01:03:30,Tablet
+61,"Check the warranty",John,2024-01-01 01:00:56,GPS
+76,"Issue payment",Jane,2024-01-01 01:03:50,Mobile Phone
+98,"Duplicate closure",Emma,2024-01-01 09:01:00,Camera
+65,"Check permissions",Nina,2024-01-01 01:05:50,Camera
+41,"Send confirmation",Zoe,2024-01-01 01:05:54,Camera
+10,"Update inventory",Alex,2024-01-01 01:05:34,Laptop
+90,"Log maintenance",Maya,2024-01-01 01:04:13,Camera
+57,"Check the warranty",John,2024-01-01 01:01:48,Camera
+41,"Check connectivity",Sophia,2024-01-01 01:05:33,Camera
+20,"Issue payment",Jane,2024-01-01 01:03:19,Laptop
+37,"Return the item",Sue,2024-01-01 01:04:00,Camera
+78,"Notify the customer",Sue,2024-01-01 01:01:30,Camera
+80,"Receive an item and repair request",John,2024-01-01 01:00:46,Tablet
+92,"Issue payment",Jane,2024-01-01 01:03:27,GPS
+96,"Notify the customer",Sue,2024-01-01 01:01:05,Mobile Phone
+68,"Log maintenance",Sophia,2024-01-01 01:04:24,Camera
+61,"Issue payment",Jane,2024-01-01 01:03:03,GPS
+50,"Accidental reopen",Liam,2024-01-01 09:00:32,GPS
+34,"Check the item",Mike,2024-01-01 01:00:57,Laptop
+5,"Check the item",Mike,2024-01-01 01:01:11,Mobile Phone
+17,"Receive an item and repair request",John,2024-01-01 01:00:18,Tablet
+1,"Generate report",Emma,2024-01-01 01:05:30,Camera
+66,"Return the item",Sue,2024-01-01 01:03:22,Mobile Phone
+78,"Repair the item",Pete,2024-01-01 01:01:58,Camera
+60,"Notify the customer",Sue,2024-01-01 01:02:05,GPS
+2,"Repair the item",Pete,2024-01-01 01:03:00,GPS
+64,"Return the item",Sue,2024-01-01 01:02:42,Camera
+63,"Survey request",Oscar,2024-01-01 09:00:29,Tablet
+97,"Notify the customer",Sue,2024-01-01 01:01:30,Tablet
+97,"Issue payment",Jane,2024-01-01 01:03:13,Tablet
+78,"Check the warranty",John,2024-01-01 01:01:08,Camera
+62,"Notify the customer",Sue,2024-01-01 01:02:19,Camera
+35,"Return the item",Sue,2024-01-01 01:04:10,GPS
+13,"Return the item",Sue,2024-01-01 01:02:26,Camera
+84,"Issue payment",Jane,2024-01-01 01:04:18,Laptop
+46,"Import updates",Nina,2024-01-01 01:04:43,GPS
+49,"Return the item",Sue,2024-01-01 01:05:06,Laptop
+51,"Repair the item",Pete,2024-01-01 01:01:34,Camera
+35,"Check the warranty",John,2024-01-01 01:02:07,GPS
+13,"Check the item",Mike,2024-01-01 01:00:41,Camera
+74,"Check the warranty",John,2024-01-01 01:01:35,Tablet
+38,"Check the item",Mike,2024-01-01 01:00:28,Mobile Phone
+92,"Return the item",Sue,2024-01-01 01:04:17,GPS
+89,"Issue payment",Jane,2024-01-01 01:03:45,Tablet
+32,"Validate data",Alex,2024-01-01 01:04:00,Tablet
+90,"Check the item",Mike,2024-01-01 01:00:52,Camera
+64,"Notify the customer",Sue,2024-01-01 01:01:30,Camera
+38,"Repair the item",Pete,2024-01-01 01:02:29,Mobile Phone
+7,"Issue payment",Jane,2024-01-01 01:03:45,GPS
+68,"Check dependencies",Sophia,2024-01-01 01:05:49,Camera
+33,"Notify the customer",Sue,2024-01-01 01:02:08,Mobile Phone
+40,"Sync database",Ben,2024-01-01 01:04:36,GPS
+29,"Check the item",Mike,2024-01-01 01:01:14,GPS
+11,"Check the item",Mike,2024-01-01 01:01:34,Tablet
+86,"Repair the item",Pete,2024-01-01 01:03:30,GPS
+77,"Update counter",Oscar,2024-01-01 01:05:57,Camera
+94,"Schedule follow-up",Oscar,2024-01-01 01:05:12,Tablet
+93,"Notify the customer",Sue,2024-01-01 01:01:45,Mobile Phone
+94,"Check the item",Mike,2024-01-01 01:00:46,Tablet
+100,"Issue payment",Jane,2024-01-01 01:02:25,Mobile Phone
+90,"Check the warranty",John,2024-01-01 01:01:15,Camera
+46,"Repair the item",Pete,2024-01-01 01:02:49,GPS
+73,"Send confirmation",Oscar,2024-01-01 01:03:53,Camera
+20,"Update inventory",Oscar,2024-01-01 01:04:40,Laptop
+30,"Check the warranty",John,2024-01-01 01:01:36,Mobile Phone
+68,"Issue payment",Jane,2024-01-01 01:03:05,Camera
+40,"Notify the customer",Sue,2024-01-01 01:02:34,GPS
+36,"Check the warranty",John,2024-01-01 01:01:33,Mobile Phone
+20,"Return the item",Sue,2024-01-01 01:04:10,Laptop
+47,"Import updates",Maya,2024-01-01 01:04:41,GPS
+21,"Create backup",Maya,2024-01-01 01:04:47,Tablet
+44,"Issue payment",Jane,2024-01-01 01:02:34,GPS
+88,"Update warranty status",Oscar,2024-01-01 01:04:49,GPS
+61,"Check the item",Mike,2024-01-01 01:00:21,GPS
+52,"Notify the customer",Sue,2024-01-01 01:02:24,Tablet
+34,"Notify the customer",Sue,2024-01-01 01:01:32,Laptop
+83,"Issue payment",Jane,2024-01-01 01:05:08,Mobile Phone
+16,"Return the item",Sue,2024-01-01 01:02:29,Tablet
+70,"Generate invoice",Oscar,2024-01-01 01:05:19,Mobile Phone
+58,"Check the warranty",John,2024-01-01 01:02:13,Tablet
+33,"Check the warranty",John,2024-01-01 01:01:35,Mobile Phone
+57,"Return the item",Sue,2024-01-01 01:03:48,Camera
+19,"Validate data",Ryan,2024-01-01 01:06:28,Mobile Phone
+76,"Return the item",Sue,2024-01-01 01:03:58,Mobile Phone
+97,"Check the warranty",John,2024-01-01 01:01:02,Tablet
+52,"Return the item",Sue,2024-01-01 01:04:15,Tablet
+52,"Repair the item",Pete,2024-01-01 01:02:48,Tablet
+30,"Notify the customer",Sue,2024-01-01 01:01:45,Mobile Phone
+49,"Send reminder email",Oscar,2024-01-01 01:05:26,Laptop
+12,"Issue payment",Jane,2024-01-01 01:02:51,Camera
+9,"Check the item",Mike,2024-01-01 01:01:00,Mobile Phone
+95,"Repair the item",Pete,2024-01-01 01:03:15,Mobile Phone
+99,"Repair the item",Pete,2024-01-01 01:03:36,Camera
+22,"Generate invoice",Emma,2024-01-01 01:05:24,Tablet
+25,"Check threshold",Maya,2024-01-01 01:05:52,Laptop
+38,"Duplicate closure",Emma,2024-01-01 09:00:15,Camera
+57,"Notify the customer",Sue,2024-01-01 01:02:01,Camera
+59,"Check the warranty",John,2024-01-01 01:02:26,Tablet
+79,"Return the item",Sue,2024-01-01 01:03:58,GPS
+66,"Log maintenance",Ryan,2024-01-01 01:04:15,Mobile Phone
+35,"Receive an item and repair request",John,2024-01-01 01:00:21,GPS
+80,"Check the item",Mike,2024-01-01 01:01:21,Tablet
+23,"Notify the customer",Sue,2024-01-01 01:02:41,Laptop
+77,"Return the item",Sue,2024-01-01 01:05:06,Camera
+68,"Repair the item",Pete,2024-01-01 01:02:39,Camera
+64,"Receive an item and repair request",John,2024-01-01 01:00:12,Camera
+64,"Schedule maintenance",Sophia,2024-01-01 01:03:59,Camera
+56,"Check the warranty",John,2024-01-01 01:01:05,Camera
+19,"Issue payment",Jane,2024-01-01 01:03:16,Mobile Phone
+72,"Send notification",Alex,2024-01-01 01:03:30,Laptop
+54,"Update status",Alex,2024-01-01 01:03:33,Camera
+80,"Issue payment",Jane,2024-01-01 01:03:10,Tablet
+23,"Update metadata",Liam,2024-01-01 01:06:49,Laptop
+4,"Update configuration",Alex,2024-01-01 01:03:53,Camera
+98,"Return the item",Sue,2024-01-01 01:04:18,Tablet
+100,"Check the warranty",John,2024-01-01 01:01:00,Mobile Phone
+60,"Check the item",Mike,2024-01-01 01:00:49,GPS
+25,"Check the item",Mike,2024-01-01 01:01:17,Laptop
+92,"Receive an item and repair request",John,2024-01-01 01:01:00,GPS
+20,"Schedule follow-up",Emma,2024-01-01 01:06:00,Laptop
+64,"Check the warranty",John,2024-01-01 01:01:22,Camera
+74,"Check the item",Mike,2024-01-01 01:01:10,Tablet
+91,"Notify the customer",Sue,2024-01-01 01:01:47,Mobile Phone
+44,"Check the warranty",John,2024-01-01 01:01:27,GPS
+50,"Check quality",Zoe,2024-01-01 01:05:58,Laptop
+67,"Issue payment",Jane,2024-01-01 01:03:25,Camera
+88,"Backup data",Ben,2024-01-01 01:04:29,GPS
+43,"Check the warranty",John,2024-01-01 01:01:39,Mobile Phone
+50,"Notify the customer",Sue,2024-01-01 01:03:03,Laptop
+26,"Notify the customer",Sue,2024-01-01 01:01:46,Laptop
+20,"Notify the customer",Sue,2024-01-01 01:01:46,Laptop
+25,"Issue payment",Jane,2024-01-01 01:04:02,Laptop
+76,"Review metrics",Liam,2024-01-01 01:04:33,Mobile Phone
+5,"Send reminder email",Sophia,2024-01-01 01:05:13,Mobile Phone
+6,"Check the item",Mike,2024-01-01 01:01:07,Mobile Phone
+93,"Repair the item",Pete,2024-01-01 01:02:10,Mobile Phone
+56,"Return the item",Sue,2024-01-01 01:02:53,Camera
+94,"Repair the item",Pete,2024-01-01 01:02:35,Tablet
+63,"Notify the customer",Sue,2024-01-01 01:01:26,GPS
+23,"Check the item",Mike,2024-01-01 01:01:34,Laptop
+81,"Check dependencies",Emma,2024-01-01 01:05:01,Camera
+68,"Notify the customer",Sue,2024-01-01 01:01:40,Camera
+45,"Receive an item and repair request",John,2024-01-01 01:00:09,Tablet
+33,"Check the item",Mike,2024-01-01 01:01:11,Mobile Phone
+21,"Receive an item and repair request",John,2024-01-01 01:00:34,Tablet
+74,"Receive an item and repair request",John,2024-01-01 01:00:19,Tablet
+29,"Process refund",Ben,2024-01-01 01:04:35,GPS
+76,"Check the warranty",John,2024-01-01 01:01:28,Mobile Phone
+26,"Issue payment",Jane,2024-01-01 01:02:45,Laptop
+82,"Return the item",Sue,2024-01-01 01:03:41,Camera
+47,"Update preferences",Zoe,2024-01-01 01:04:26,GPS
+43,"Sync database",Sophia,2024-01-01 01:05:38,Mobile Phone
+18,"Notify the customer",Sue,2024-01-01 01:01:56,Laptop
+45,"Check dependencies",Liam,2024-01-01 01:03:31,Tablet
+37,"Validate rules",Nina,2024-01-01 01:04:25,Camera

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Static Object-Centric DFG with Global Happy Path (Zoomable)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+  html, body {
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    font-family: 'Roboto', sans-serif;
+    background: #eef3f7;
+    overflow: hidden;
+  }
+  #graph-container {
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom right, #ffffff, #dce1e6);
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab; /* visual hint for panning */
+  }
+
+  .node {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  /* Header Nodes */
+  .header-node rect {
+    fill: url(#header-pattern);
+    stroke: #bdc3c7;
+    stroke-width: 1px;
+    rx: 6;
+    ry: 6;
+  }
+  .header-label {
+    font-weight: 500;
+    fill: #2c3e50;
+    font-size: 14px;
+  }
+  .header-sub-label {
+    font-size: 11px;
+    fill: #7f8c8d;
+  }
+
+  /* Start/End Nodes */
+  .start-node ellipse, .end-node ellipse {
+    fill: url(#startend-gradient);
+    stroke: #2c3e50;
+    stroke-width: 1px;
+  }
+  .start-node text, .end-node text {
+    fill: #2c3e50;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  /* Activity Nodes */
+  .activity-node rect {
+    fill: url(#activity-gradient);
+    stroke: #bdc3c7;
+    stroke-width: 1px;
+    rx: 8;
+    ry: 8;
+  }
+  .activity-label {
+    font-weight: 500;
+    fill: #2c3e50;
+    font-size: 14px;
+  }
+  .activity-sub-label {
+    font-size: 12px;
+    fill: #7f8c8d;
+  }
+
+  /* Circle indicators for object types associated with activity */
+  .obj-type-circle {
+    stroke: none;
+    r: 5;
+  }
+
+  /* Line Segments (Edges) */
+  .line-segment {
+    fill: none;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    marker-end: url(#arrowhead);
+    opacity: 0.85;
+  }
+
+  /* Colors for different object lines */
+  .obj-type-1 { stroke: #9b59b6; } /* Purple */
+  .obj-type-2 { stroke: #2980b9; } /* Blue */
+  .obj-type-3 { stroke: #16a085; } /* Teal */
+  .obj-type-4 { stroke: #d35400; } /* Orange */
+  .obj-type-5 { stroke: #c0392b; } /* Red */
+
+  /* Same colors for circles */
+  .obj-type-color-1 { fill: #9b59b6; }
+  .obj-type-color-2 { fill: #2980b9; }
+  .obj-type-color-3 { fill: #16a085; }
+  .obj-type-color-4 { fill: #d35400; }
+  .obj-type-color-5 { fill: #c0392b; }
+
+  .edge-label {
+    font-size: 11px;
+    fill: #2c3e50;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 1px 1px 2px #fff;
+  }
+
+  /* Highlight the happy path edges and nodes */
+  .happy-path-edge {
+    stroke-width: 3.5px;
+    opacity: 1.0;
+  }
+
+  .happy-path-node rect {
+    stroke: #2c3e50;
+    stroke-width: 2px;
+  }
+
+</style>
+</head>
+<body>
+<div id="graph-container"></div>
+
+<!-- Include ELK.js -->
+<script src="https://unpkg.com/elkjs/lib/elk.bundled.js"></script>
+<script>
+// The code here is the same as previously provided, except we will add zoom logic after drawing.
+function findHappyPathGlobal(data) {
+  function freqToNum(str) {
+    let val = parseFloat(str);
+    if (str.includes('M')) val *= 1000000;
+    else if (str.includes('K')) val *= 1000;
+    return val;
+  }
+
+  const adj = {};
+  const superStart = "__superStart__";
+  const superEnd = "__superEnd__";
+
+  function addEdge(u,v,freqObj,originalEdge) {
+    if (!adj[u]) adj[u] = [];
+    adj[u].push({target:v, frequency: freqObj, original: originalEdge});
+  }
+
+  function startNodeId(ot) { return "Start@"+ot; }
+  function endNodeId(ot) { return "End@"+ot; }
+
+  for (const ot of data.objectTypes) {
+    addEdge(superStart, startNodeId(ot.objType), 0, null);
+    addEdge(endNodeId(ot.objType), superEnd, 0, null);
+  }
+
+  for (const ot of data.objectTypes) {
+    for (const e of ot.edges) {
+      let sNode, tNode;
+      if (e.source === "Start") sNode = startNodeId(ot.objType);
+      else if (e.source === "End") sNode = endNodeId(ot.objType);
+      else sNode = e.source;
+
+      if (e.target === "Start") tNode = startNodeId(ot.objType);
+      else if (e.target === "End") tNode = endNodeId(ot.objType);
+      else tNode = e.target;
+
+      addEdge(sNode, tNode, freqToNum(e.frequency), e);
+    }
+  }
+
+  let bestPath = [];
+  let bestScore = -1;
+
+  function dfs(node, path, score, visited) {
+    if (node === superEnd) {
+      if (score > bestScore) {
+        bestScore = score;
+        bestPath = [...path];
+      }
+      return;
+    }
+    if (!adj[node]) return;
+    for (let edge of adj[node]) {
+      if (visited.has(edge.target)) continue;
+      path.push(edge);
+      visited.add(edge.target);
+      dfs(edge.target, path, score+edge.frequency, visited);
+      path.pop();
+      visited.delete(edge.target);
+    }
+  }
+
+  let visited = new Set();
+  visited.add(superStart);
+  dfs(superStart, [], 0, visited);
+
+  const happyNodes = new Set();
+  const happyEdges = new Set();
+  happyNodes.add(superStart);
+  for (let e of bestPath) {
+    if (e.original) happyEdges.add(e.original);
+    happyNodes.add(e.target);
+  }
+  if (bestScore >= 0) happyNodes.add(superEnd);
+
+  happyNodes.delete(superStart);
+  happyNodes.delete(superEnd);
+
+  return {nodes: Array.from(happyNodes), edges: Array.from(happyEdges)};
+}
+
+async function drawGraph(dfgData, options = {showFrequency: false, showPerformance: true}) {
+  const happyPath = findHappyPathGlobal(dfgData);
+  const graph = buildGraph(dfgData, happyPath);
+
+  const elk = new ELK();
+  const layout = await elk.layout(graph);
+
+  const container = document.getElementById('graph-container');
+  container.innerHTML = "";
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, 'svg');
+
+  let width = 0, height = 0;
+  (function traverse(node) {
+    if(node.x + node.width > width) width = node.x + node.width;
+    if(node.y + node.height > height) height = node.y + node.height;
+    if(node.children) {
+      node.children.forEach(traverse);
+    }
+  })(layout);
+
+  width += 100;
+  height += 100;
+
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+  // Define gradients, patterns, arrows and other defs
+  const defs = document.createElementNS(svgNS, "defs");
+
+  // Activity gradient
+  const activityGrad = document.createElementNS(svgNS, "linearGradient");
+  activityGrad.setAttribute('id', 'activity-gradient');
+  activityGrad.setAttribute('x1', '0');
+  activityGrad.setAttribute('y1', '0');
+  activityGrad.setAttribute('x2', '0');
+  activityGrad.setAttribute('y2', '1');
+  const actStop1 = document.createElementNS(svgNS, "stop");
+  actStop1.setAttribute('offset', '0%');
+  actStop1.setAttribute('stop-color', '#ffffff');
+  const actStop2 = document.createElementNS(svgNS, "stop");
+  actStop2.setAttribute('offset', '100%');
+  actStop2.setAttribute('stop-color', '#ecf5f9');
+  activityGrad.appendChild(actStop1);
+  activityGrad.appendChild(actStop2);
+  defs.appendChild(activityGrad);
+
+  // Header pattern
+  const pattern = document.createElementNS(svgNS, "pattern");
+  pattern.setAttribute('id', 'header-pattern');
+  pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+  pattern.setAttribute('width', '8');
+  pattern.setAttribute('height', '8');
+  const patternRect = document.createElementNS(svgNS, 'rect');
+  patternRect.setAttribute('width', '8');
+  patternRect.setAttribute('height', '8');
+  patternRect.setAttribute('fill', '#ffffff');
+  pattern.appendChild(patternRect);
+  const patternPath = document.createElementNS(svgNS, 'path');
+  patternPath.setAttribute('d', 'M0,0 L8,8 M8,0 L0,8');
+  patternPath.setAttribute('stroke', '#e2e6e9');
+  patternPath.setAttribute('stroke-width', '0.5');
+  pattern.appendChild(patternPath);
+  defs.appendChild(pattern);
+
+  // Radial gradient for start/end
+  const startEndGrad = document.createElementNS(svgNS, "radialGradient");
+  startEndGrad.setAttribute('id', 'startend-gradient');
+  startEndGrad.setAttribute('cx', '50%');
+  startEndGrad.setAttribute('cy', '50%');
+  startEndGrad.setAttribute('r', '50%');
+  const seStop1 = document.createElementNS(svgNS, "stop");
+  seStop1.setAttribute('offset', '0%');
+  seStop1.setAttribute('stop-color', '#ffffff');
+  const seStop2 = document.createElementNS(svgNS, "stop");
+  seStop2.setAttribute('offset', '100%');
+  seStop2.setAttribute('stop-color', '#f0f1f2');
+  startEndGrad.appendChild(seStop1);
+  startEndGrad.appendChild(seStop2);
+  defs.appendChild(startEndGrad);
+
+  // Arrow marker
+  const marker = document.createElementNS(svgNS, "marker");
+  marker.setAttribute("id", "arrowhead");
+  marker.setAttribute("viewBox", "0 0 10 10");
+  marker.setAttribute("refX", "8");
+  marker.setAttribute("refY", "5");
+  marker.setAttribute("markerWidth", "6");
+  marker.setAttribute("markerHeight", "6");
+  marker.setAttribute("orient", "auto-start-reverse");
+  const markerPath = document.createElementNS(svgNS, "path");
+  markerPath.setAttribute("d", "M0,0 L10,5 L0,10 Z");
+  markerPath.setAttribute("fill", "#333");
+  marker.appendChild(markerPath);
+  defs.appendChild(marker);
+
+  svg.appendChild(defs);
+
+  let showFrequency = options.showFrequency;
+  let showPerformance = options.showPerformance;
+  if (showFrequency && showPerformance) {
+    showFrequency = false; // prefer performance
+  }
+
+  function placeLabelAtEdgeMidpoint(points) {
+    let totalLength = 0;
+    for (let i=0; i<points.length-1; i++) {
+      const dx = points[i+1].x - points[i].x;
+      const dy = points[i+1].y - points[i].y;
+      totalLength += Math.sqrt(dx*dx + dy*dy);
+    }
+    const halfLength = totalLength / 2;
+
+    let currentLength = 0;
+    for (let i=0; i<points.length-1; i++) {
+      const dx = points[i+1].x - points[i].x;
+      const dy = points[i+1].y - points[i].y;
+      const segLength = Math.sqrt(dx*dx + dy*dy);
+      if (currentLength + segLength >= halfLength) {
+        const remaining = halfLength - currentLength;
+        const ratio = remaining / segLength;
+        const x = points[i].x + ratio * dx;
+        const y = points[i].y + ratio * dy;
+        return {x,y};
+      }
+      currentLength += segLength;
+    }
+    return points[Math.floor(points.length/2)];
+  }
+
+  // Create a <g> for all content so we can scale it
+  const gMain = document.createElementNS(svgNS, 'g');
+  svg.appendChild(gMain);
+
+  // Draw edges
+  layout.edges.forEach(e => {
+    const g = document.createElementNS(svgNS, 'g');
+    const line = document.createElementNS(svgNS, 'path');
+    const section = e.sections[0];
+    const points = section.bendPoints ?
+      [section.startPoint, ...section.bendPoints, section.endPoint] :
+      [section.startPoint, section.endPoint];
+
+    const d = "M " + points.map(p => p.x + " " + p.y).join(" L ");
+    line.setAttribute('d', d);
+    line.setAttribute('class', 'line-segment');
+    if (e.properties && e.properties.objType) {
+      line.classList.add(`obj-type-${e.properties.objType}`);
+    } else {
+      line.setAttribute('stroke', '#7f8c8d');
+    }
+
+    if (e.properties && e.properties.onHappyPath) {
+      line.classList.add('happy-path-edge');
+    }
+
+    g.appendChild(line);
+
+    if (e.properties && e.properties.edgeFrequency !== "N/A") {
+      let labelText = "";
+      if (showPerformance && e.properties.edgePerformance) {
+        labelText = e.properties.edgePerformance;
+      } else if (showFrequency && e.properties.edgeFrequency) {
+        labelText = e.properties.edgeFrequency;
+      }
+
+      if (labelText) {
+        const midPoint = placeLabelAtEdgeMidpoint(points);
+        const textEl = document.createElementNS(svgNS, 'text');
+        textEl.setAttribute('x', midPoint.x);
+        textEl.setAttribute('y', midPoint.y - 5);
+        textEl.setAttribute('text-anchor','middle');
+        textEl.setAttribute('class','edge-label');
+        textEl.textContent = labelText;
+        g.appendChild(textEl);
+      }
+    }
+
+    gMain.appendChild(g);
+  });
+
+  // Draw nodes
+  function drawNode(node) {
+    const g = document.createElementNS(svgNS, 'g');
+    g.setAttribute('transform', `translate(${node.x},${node.y})`);
+    g.setAttribute('class','node');
+    if(node.properties && node.properties.type) {
+      g.classList.add(node.properties.type);
+    }
+
+    if (node.properties && node.properties.onHappyPathNode) {
+      g.classList.add('happy-path-node');
+    }
+
+    if (node.properties && (node.properties.type === 'start-node' || node.properties.type === 'end-node')) {
+      const ellipse = document.createElementNS(svgNS, 'ellipse');
+      const rx = node.width/2;
+      const ry = node.height/2;
+      ellipse.setAttribute('cx', rx);
+      ellipse.setAttribute('cy', ry);
+      ellipse.setAttribute('rx', rx);
+      ellipse.setAttribute('ry', ry);
+      g.appendChild(ellipse);
+    } else if (node.properties && node.properties.type === 'header-node') {
+      const rect = document.createElementNS(svgNS, 'rect');
+      rect.setAttribute('width', node.width);
+      rect.setAttribute('height', node.height);
+      g.appendChild(rect);
+    } else if (node.properties && node.properties.type === 'activity-node') {
+      const rect = document.createElementNS(svgNS, 'rect');
+      rect.setAttribute('width', node.width);
+      rect.setAttribute('height', node.height);
+      g.appendChild(rect);
+
+      const associatedObjTypes = activityToObjTypes.get(node.properties.activityName) || [];
+      const circleMargin = 5;
+      const circleRadius = 5;
+      const totalCircles = associatedObjTypes.length;
+      const totalHeight = totalCircles*circleRadius*2 + (totalCircles-1)*circleMargin;
+      let startY = (node.height - totalHeight)/2 + circleRadius;
+      const startX = circleRadius + 5;
+      associatedObjTypes.forEach((ot, i) => {
+        const cy = startY + i*(circleRadius*2 + circleMargin);
+        const c = document.createElementNS(svgNS, 'circle');
+        c.setAttribute('cx', startX);
+        c.setAttribute('cy', cy);
+        c.setAttribute('r', circleRadius);
+        c.setAttribute('class', `obj-type-circle obj-type-color-${ot}`);
+        g.appendChild(c);
+      });
+    }
+
+    if(node.labels && node.labels.length > 0) {
+      let lines = node.labels[0].text.split('\n');
+      if(node.properties && node.properties.type === 'header-node') {
+        lines.forEach((lineText, i) => {
+          const textEl = document.createElementNS(svgNS, 'text');
+          textEl.setAttribute('x', node.width / 2);
+          textEl.setAttribute('text-anchor','middle');
+          const dy = (node.height / 2) + (i * 14) - ((lines.length - 1)*7);
+          textEl.setAttribute('y', dy);
+          textEl.textContent = lineText;
+          textEl.setAttribute('class', i === 0 ? 'header-label' : 'header-sub-label');
+          g.appendChild(textEl);
+        });
+      } else if (node.properties && node.properties.type === 'activity-node') {
+        lines.forEach((lineText, i) => {
+          const textEl = document.createElementNS(svgNS, 'text');
+          textEl.setAttribute('text-anchor','middle');
+          const dy = (node.height / 2) + (i * 14) - ((lines.length - 1)*7);
+          textEl.setAttribute('x', node.width / 2);
+          textEl.setAttribute('y', dy);
+          textEl.textContent = lineText;
+
+          if (lineText.startsWith("Overall:")) {
+            textEl.setAttribute('class','activity-sub-label');
+          } else {
+            textEl.setAttribute('class','activity-label');
+          }
+
+          g.appendChild(textEl);
+        });
+      } else if (node.properties && (node.properties.type === 'start-node' || node.properties.type === 'end-node')) {
+        lines.forEach((lineText) => {
+          const textEl = document.createElementNS(svgNS, 'text');
+          textEl.setAttribute('x', node.width / 2);
+          textEl.setAttribute('y', (node.height / 2) + 4);
+          textEl.setAttribute('text-anchor','middle');
+          textEl.textContent = lineText;
+          g.appendChild(textEl);
+        });
+      }
+    }
+
+    gMain.appendChild(g);
+    if(node.children) {
+      node.children.forEach(drawNode);
+    }
+  }
+
+  layout.children.forEach(drawNode);
+
+  container.appendChild(svg);
+
+  // Implement zoom via mouse wheel
+  let scaleLevel = 1.0;
+  svg.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    const zoomFactor = 1.05; // tweak for sensitivity
+    if (event.deltaY < 0) {
+      // zoom in
+      scaleLevel *= zoomFactor;
+    } else {
+      // zoom out
+      scaleLevel /= zoomFactor;
+    }
+    // limit zoom level
+    scaleLevel = Math.min(Math.max(scaleLevel, 0.1), 10);
+    gMain.setAttribute('transform', `scale(${scaleLevel})`);
+  }, {passive:false});
+}
+
+let activityToObjTypes = new Map(); // Map activityName -> array of objTypes
+
+function buildGraph(dfgData, happyPath) {
+  const objectTypes = dfgData.objectTypes;
+  const overallActivityStats = dfgData.overallActivityStats || {};
+
+  const nodes = [];
+  const edges = [];
+  const activityNodes = new Map();
+  const startNodes = new Map();
+  const endNodes = new Map();
+  const headerNodes = new Map();
+
+  function startNodeId(ot) { return "Start@"+ot; }
+  function endNodeId(ot) { return "End@"+ot; }
+
+  const activitySetMap = new Map();
+  for (const ot of objectTypes) {
+    for (const act of ot.activities) {
+      if (!activitySetMap.has(act.name)) {
+        activitySetMap.set(act.name, new Set());
+      }
+      activitySetMap.get(act.name).add(ot.objType);
+    }
+  }
+
+  activityToObjTypes = new Map();
+  for (let [actName, setOT] of activitySetMap.entries()) {
+    activityToObjTypes.set(actName, Array.from(setOT));
+  }
+
+  const happyPathNodes = new Set(happyPath.nodes);
+  const happyPathEdges = new Set(happyPath.edges);
+
+  for (const ot of objectTypes) {
+    const headerId = "hdr_" + ot.objType;
+    headerNodes.set(ot.objType, headerId);
+    nodes.push({
+      id: headerId,
+      width: 200, height: 50,
+      labels: [{text: ot.headerLabel}],
+      properties: {type:'header-node', objType:ot.objType}
+    });
+
+    const sId = startNodeId(ot.objType);
+    startNodes.set(ot.objType, sId);
+    nodes.push({
+      id: sId,
+      width:80, height:40,
+      labels:[{text:"Start"}],
+      properties:{type:'start-node', objType: ot.objType, onHappyPathNode: happyPathNodes.has(sId)}
+    });
+
+    const eId = endNodeId(ot.objType);
+    endNodes.set(ot.objType, eId);
+    nodes.push({
+      id: eId,
+      width:80, height:40,
+      labels:[{text:"End"}],
+      properties:{type:'end-node', objType: ot.objType, onHappyPathNode: happyPathNodes.has(eId)}
+    });
+
+    for (const act of ot.activities) {
+      if (!activityNodes.has(act.name)) {
+        const overallFreq = overallActivityStats[act.name] ? overallActivityStats[act.name].totalFrequency : "";
+        const labelLines = [act.name];
+        if (overallFreq && overallFreq.trim().length > 0) {
+          labelLines.push(`Overall: ${overallFreq}`);
+        }
+        const actId = "act_" + act.name;
+        activityNodes.set(act.name, actId);
+        nodes.push({
+          id: actId,
+          width:180, height:60,
+          labels:[{text: labelLines.join('\n')}],
+          properties:{type:'activity-node', activityName: act.name, onHappyPathNode: happyPathNodes.has(act.name)}
+        });
+      }
+    }
+  }
+
+  for (const ot of objectTypes) {
+    edges.push({
+      id:"eh_"+ot.objType,
+      sources:[headerNodes.get(ot.objType)],
+      targets:[startNodes.get(ot.objType)],
+      properties:{objType: ot.objType, edgeFrequency:"N/A"}
+    });
+  }
+
+  for (const ot of objectTypes) {
+    for (const e of ot.edges) {
+      let sourceId, targetId;
+      if (e.source === "Start") {
+        sourceId = startNodes.get(ot.objType);
+      } else if (e.source === "End") {
+        sourceId = endNodes.get(ot.objType);
+      } else {
+        sourceId = "act_" + e.source;
+      }
+
+      if (e.target === "Start") {
+        targetId = startNodes.get(ot.objType);
+      } else if (e.target === "End") {
+        targetId = endNodes.get(ot.objType);
+      } else {
+        targetId = "act_" + e.target;
+      }
+
+      edges.push({
+        id:"e_"+(Math.random().toString(36).substr(2,9)),
+        sources:[sourceId],
+        targets:[targetId],
+        properties:{
+          objType: ot.objType,
+          edgeFrequency: e.frequency,
+          edgePerformance: e.performance,
+          onHappyPath: happyPathEdges.has(e)
+        }
+      });
+    }
+  }
+
+  return {
+    id: "root",
+    layoutOptions: {
+      'elk.direction': 'DOWN',
+      'elk.layered.nodeAlignment': 'CENTER',
+      'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
+      'elk.spacing.nodeNode': '50',
+      'elk.spacing.edgeEdge': '25',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '50',
+      'elk.algorithm': 'layered'
+    },
+    children: nodes,
+    edges: edges
+  };
+}
+
+REPLACE
+</script>
+</body>
+</html>

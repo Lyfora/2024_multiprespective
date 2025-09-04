@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GO-TR Deviation Monitor</title>
+    <style>
+        .alert { padding: 10px; margin: 5px; border-radius: 5px; }
+        .low { background-color: #fff3cd; }
+        .medium { background-color: #f8d7da; }
+        .high { background-color: #f5c6cb; }
+        .critical { background-color: #721c24; color: white; }
+    </style>
+</head>
+<body>
+    <h1>GO-TR Real-time Deviation Monitor</h1>
+    <div id="status">Disconnected</div>
+    <div id="alerts"></div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:8000/ws');
+        const statusDiv = document.getElementById('status');
+        const alertsDiv = document.getElementById('alerts');
+
+        ws.onopen = () => {
+            statusDiv.textContent = 'Connected';
+            statusDiv.style.color = 'green';
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            if (data.type === 'deviation_alert' || data.type === 'critical_alert') {
+                const alertElement = document.createElement('div');
+                alertElement.className = `alert ${data.severity}`;
+                alertElement.innerHTML = `
+                    <strong>${data.timestamp}</strong><br>
+                    Case: ${data.case_id}<br>
+                    Type: ${data.deviation_type}<br>
+                    Message: ${data.message}<br>
+                    Score: ${data.cumulative_score.toFixed(2)}
+                `;
+                alertsDiv.prepend(alertElement);
+            }
+        };
+
+        ws.onclose = () => {
+            statusDiv.textContent = 'Disconnected';
+            statusDiv.style.color = 'red';
+        };
+
+        // Heartbeat
+        setInterval(() => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send('ping');
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

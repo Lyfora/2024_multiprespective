@@ -1,0 +1,8 @@
+case_id;activity;resource;timestamp;product_type
+5;Receive an item and repair request;John;;Mobile Phone team
+5;Check the item;Pete;
+5;Check the warranty;John;
+5;Notify the customer;Sue;
+5;Repair the item;Pete;
+5;Issue payment;Jane;
+5;Return the item;Sue;
