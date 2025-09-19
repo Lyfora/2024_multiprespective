@@ -100,8 +100,7 @@ class KafkaWebhookProducer:
                 num_partitions=self.config.get('partitions', 3),
                 replication_factor=self.config.get('replication_factor', 2)
             )
-        ]
-        
+        ]  
         try:
             self.admin_client.create_topics(new_topics=topics_config, validate_only=False)
             logger.info(f"Topics created: {[t.name for t in topics_config]}")

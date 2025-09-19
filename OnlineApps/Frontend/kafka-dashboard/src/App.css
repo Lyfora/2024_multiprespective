@@ -1,6 +1,13 @@
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
 /* Configuration Form Styles */
 .configuration-container {
-  /* Remove the auto margins and make it full viewport */
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -9,12 +16,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f0f4f8; /* Light background for the full page */
+  background-color: #f0f4f8;
 }
 
-
 .configuration-form {
-  /* Keep the white box but make it stand out on the full page */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -23,13 +28,13 @@
   border-radius: 10px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 500px; /* Limit max width for better readability */
+  max-width: 500px;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+.configuration-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
 }
 
 .form-group {
@@ -41,6 +46,8 @@ body {
 .form-group label {
   font-weight: bold;
   color: #333;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .form-group input[type="text"] {
@@ -48,6 +55,8 @@ body {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .radio-group {
@@ -65,6 +74,7 @@ body {
 
 .radio-label input[type="radio"] {
   cursor: pointer;
+  margin-right: 0.5rem;
 }
 
 .error-message {
@@ -73,6 +83,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #f5c6cb;
+  margin-top: 1rem;
 }
 
 .configure-button {
@@ -84,6 +95,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 100%;
 }
 
 .configure-button:hover {
@@ -101,11 +113,18 @@ body {
   box-sizing: border-box;
 }
 
+.monitor-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
 .status {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
   font-weight: bold;
+  text-align: center;
 }
 
 .status.connected {
@@ -118,6 +137,119 @@ body {
   color: #721c24;
 }
 
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-value {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-value.critical {
+  color: #dc3545;
+}
+
+.stat-value.deviation {
+  color: #ffc107;
+}
+
+.stat-value.active {
+  color: #28a745;
+}
+
+.stat-value.total {
+  color: #007bff;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.mode-indicator {
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.buttons {
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button.danger {
+  background-color: #dc3545;
+}
+
+button.danger:hover {
+  background-color: #c82333;
+}
+
+button.success {
+  background-color: #28a745;
+}
+
+button.success:hover {
+  background-color: #218838;
+}
+
+.sync-status {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.sync-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alerts {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
 .alert {
   padding: 15px;
   margin: 10px 0;
@@ -125,6 +257,7 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   animation: slideIn 0.5s ease-out;
   position: relative;
+  font-size: 0.9rem;
 }
 
 @keyframes slideIn {
@@ -142,16 +275,27 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  align-items: flex-start;
 }
 
 .timestamp {
   font-size: 0.9em;
   color: #666;
+  font-weight: bold;
 }
 
 .case-id {
   font-weight: bold;
   color: #333;
+}
+
+.alert-content {
+  margin-bottom: 10px;
+}
+
+.alert-content strong {
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .low { 
@@ -170,8 +314,12 @@ body {
 }
 
 .critical { 
-  background-color: #721c24;
   color: white;
+  border-left: 4px solid #ff0000;
+}
+
+.critical-stat { 
+  color: #ff0000;
   border-left: 4px solid #ff0000;
 }
 
@@ -179,75 +327,37 @@ body {
   color: #ddd;
 }
 
+.deviation {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+}
+
+.deviation-stat {
+  color: #ffc107;
+}
+
+.critical-alert {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-badge {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.alert-badge.deviation {
+  background-color: #ffc107;
+  color: #212529;
+}
+
 .event-history {
   margin-top: 10px;
   font-size: 0.9em;
-}
-
-.stats {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.stat-item {
-  text-align: center;
-  flex: 1;
-}
-
-.stat-value {
-  font-size: 2em;
-  font-weight: bold;
-  color: #333;
-}
-
-.stat-label {
-  color: #666;
-  font-size: 0.9em;
-}
-
-.mode-indicator {
-  padding: 10px;
-  background-color: #e9ecef;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.buttons {
-  margin-bottom: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.sync-status {
-  background-color: #d1ecf1;
-  border-color: #bee5eb;
-  color: #0c5460;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-}
-
-.sync-status.error {
-  background-color: #f8d7da;
-  color: #721c24;
 }
 
 .source-badge {
@@ -260,7 +370,10 @@ button:hover {
   background-color: rgba(0,0,0,0.1);
 }
 
-.alerts {
-  max-height: 600px;
-  overflow-y: auto;
+.no-alerts {
+  text-align: center;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  color: #666;
 }

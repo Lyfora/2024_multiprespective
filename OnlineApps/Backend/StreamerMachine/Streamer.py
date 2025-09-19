@@ -394,8 +394,8 @@ def main():
     webhook_url = "http://localhost:8100/events"  # Kafka producer webhook endpoint
     
     config = {
-        'watermark_interval_events': 100,
-        'fixed_interval_ms': 100
+        'watermark_interval_events': 5000,
+        'fixed_interval_ms': 5000
     }
     
     # Create event producer
@@ -406,7 +406,7 @@ def main():
         producer.start_production(
             file_paths=["output_logv2.xes"],
             mode="fixed_interval",  # Options: exact, scaled, fixed_interval, burst
-            speed=0.25      # 4x faster than original
+            speed=1      # 4x faster than original
         )
     except KeyboardInterrupt:
         logger.info("Interrupted by user")

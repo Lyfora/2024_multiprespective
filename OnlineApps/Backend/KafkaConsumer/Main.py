@@ -72,9 +72,8 @@ class GOTRKafkaConsumer:
         self.kafka_config = kafka_config or {
             'bootstrap_servers': ['localhost:9092', 'localhost:9093', 'localhost:9094'],
             'auto_offset_reset': 'earliest',
-            'enable_auto_commit': False,  #Set False to Reindex each run, set True to stay to the last index
-            'auto_offset_reset':"earliest",
-            'group_id': 'gotr_consumer_group_4',
+            'enable_auto_commit': True,  #Set False to Reindex each run, set True to stay to the last index
+            'group_id': 'gotr_consumer_group_6',
             'value_deserializer': lambda m: json.loads(m.decode('utf-8')),
             'key_deserializer': lambda m: m.decode('utf-8') if m else None
         }
@@ -589,7 +588,7 @@ class GOTRKafkaConsumer:
         Updates anomaly scores and sends alerts.
         """
         deviation_type = deviation_details.get('type')
-        
+        activity_did = deviation_details.get('activity')
         if deviation_type == 'missing_token':
             self.anomaly_scores[p_id] += 1.0
         elif deviation_type == 'organizational':
@@ -611,21 +610,23 @@ class GOTRKafkaConsumer:
             "details": deviation_details,
             "cumulative_score": self.anomaly_scores[p_id],
             "event_history": self.case_event_history[p_id][-5:],  # Last 5 events
-            "message": f"Deviation detected in case {p_id}: {deviation_type}"
+            "message": f"Deviation detected in case {p_id}: {deviation_type} {activity_did}"
         }
     
-        # Send WebSocket alert
-        self.send_deviation_alert(alert_data)
-
-        if self.anomaly_scores[p_id] >= 1.0:
+        if self.anomaly_scores[p_id] >= 1.5:
             print(f"🔥 WARNING! Inspection needed on Case ID: {p_id}")
             # THIS IS WHERE YOU WOULD SEND A WEBSOCKET/API ALERT TO THE FRONTEND
             critical_alert = {
                 **alert_data,
                 "type": "critical_alert",
-                "message": f"CRITICAL: Case {p_id} requires immediate inspection!"
+                "message": f"CRITICAL: Case {p_id} requires immediate inspection! with activity {activity_did} {deviation_type}"
             }
             self.send_deviation_alert(critical_alert)
+        else:
+            # Send WebSocket alert
+            self.send_deviation_alert(alert_data)
+
+
             
     def cleanup(self):
         """Clean up resources"""

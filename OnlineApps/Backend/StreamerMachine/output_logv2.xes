@@ -9,10 +9,10 @@
 			<int key="case_id" value="1" />
 			<string key="activity" value="Receive an item and repair request" />
 			<string key="resource" value="John" />
-			<date key="timestamp" value="2025-09-05T19:43:32.732265+00:00" />
+			<date key="timestamp" value="2025-09-05T19:43:49.732265+00:00" />
 			<string key="product_type" value="Mobile Phone team" />
 			<string key="concept:name" value="Receive an item and repair request" />
-			<date key="time:timestamp" value="2025-09-05T19:43:32.732265+00:00" />
+			<date key="time:timestamp" value="2025-09-05T19:43:49.732265+00:00" />
 			<int key="@@index" value="0" />
 			<int key="@@case_index" value="0" />
 		</event>

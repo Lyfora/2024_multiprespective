@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import './App.css'; // We'll define styles separately
+import "./App.css"
 
 const GOTRMonitor = () => {
   // Configuration state
@@ -21,6 +21,7 @@ const GOTRMonitor = () => {
   const [stats, setStats] = useState({
     totalAlerts: 0,
     criticalCount: 0,
+    deviationCount: 0,
     activeCases: 0,
     syncedAlerts: 0
   });
@@ -33,8 +34,7 @@ const GOTRMonitor = () => {
   const SYNC_INTERVAL = 30000;
 
   // Configure and start monitoring
-  const handleConfigure = async (e) => {
-    e.preventDefault();
+  const handleConfigure = async () => {
     setConfigError('');
 
     try {
@@ -132,14 +132,19 @@ const GOTRMonitor = () => {
     updateStatistics();
   }, [alertsMap]);
 
+  // Fixed statistics calculation based on 'type' field
   const updateStatistics = useCallback(() => {
     const alertsArray = Array.from(alertsMap.values());
-    const criticalAlerts = alertsArray.filter(a => a.severity === 'critical');
+    
+    // Count based on 'type' field instead of 'severity'
+    const criticalAlerts = alertsArray.filter(a => a.type === 'critical_alert');
+    const deviationAlerts = alertsArray.filter(a => a.type === 'deviation_alert');
     
     setStats(prev => ({
       ...prev,
       totalAlerts: alertsMap.size,
       criticalCount: criticalAlerts.length,
+      deviationCount: deviationAlerts.length,
       syncedAlerts: alertsMap.size
     }));
   }, [alertsMap]);
@@ -147,7 +152,6 @@ const GOTRMonitor = () => {
   // Local Storage
   const saveToLocalStorage = useCallback(() => {
     try {
-        // Use functional updates to avoid dependencies
         const dataToStore = {
             alerts: Array.from(alertsMap.values()).slice(0, MAX_STORED_ALERTS),
             lastSync: lastSyncTimestamp,
@@ -156,7 +160,7 @@ const GOTRMonitor = () => {
     } catch (error) {
         console.error('Error saving to localStorage:', error);
     }
-    }, []); // Remove dependencies - access current values directly
+    }, []);
 
   const loadFromLocalStorage = useCallback(() => {
     try {
@@ -189,7 +193,7 @@ const GOTRMonitor = () => {
           throw new Error(`Server responded with status ${response.status}`);
         }
         const data = await response.json();
-  
+
         let newAlerts = 0;
         data.alerts.forEach(alert => {
           if (!alertsMap.has(alert.alert_id)) {
@@ -197,7 +201,7 @@ const GOTRMonitor = () => {
             newAlerts++;
           }
         });
-  
+
         setLastSyncTimestamp(new Date().toISOString());
         showSyncStatus(`Sync complete: Found ${newAlerts} new alerts.`);
 
@@ -206,7 +210,7 @@ const GOTRMonitor = () => {
         console.error('Error syncing with server:', error);
         showSyncStatus('Sync failed: ' + error.message, true);
         }
-    }, []); // Remove dependencies
+    }, []);
 
   const updateServerStats = async () => {
     try {
@@ -247,7 +251,7 @@ const GOTRMonitor = () => {
     }
 
     const alertsArray = Array.from(alertsMap.values());
-    const headers = ['timestamp', 'case_id', 'deviation_type', 'severity', 'cumulative_score', 'message', 'event_history'];
+    const headers = ['timestamp', 'case_id', 'deviation_type', 'type', 'severity', 'cumulative_score', 'message', 'event_history'];
     
     const escapeCSV = (str) => {
       if (str === null || str === undefined) return '';
@@ -264,7 +268,8 @@ const GOTRMonitor = () => {
         alert.timestamp,
         alert.case_id,
         alert.deviation_type,
-        alert.severity,
+        alert.type,
+        alert.severity || '',
         alert.cumulative_score?.toFixed(4) || '0',
         alert.message,
         alert.event_history ? alert.event_history.join(' | ') : ''
@@ -288,7 +293,6 @@ const GOTRMonitor = () => {
   };
 
   // Effects
-  // Add a separate effect for WebSocket connection
   useEffect(() => {
       if (!isConfigured) return;
 
@@ -302,9 +306,8 @@ const GOTRMonitor = () => {
               wsRef.current.close();
           }
       };
-  }, [isConfigured, connectWebSocket]); // Only depend on isConfigured and connectWebSocket
+  }, [isConfigured, connectWebSocket]);
 
-  // Separate effect for save/sync intervals
   useEffect(() => {
       if (!isConfigured) return;
 
@@ -315,67 +318,76 @@ const GOTRMonitor = () => {
           clearInterval(saveInterval);
           clearInterval(syncInterval);
       };
-  }, [isConfigured]); // Remove the function dependencies
+  }, [isConfigured]);
 
   // Configuration Form Component
   if (!isConfigured) {
     return (
       <div className="configuration-container">
-        <h1>GO-TR Monitor Configuration</h1>
-        <form onSubmit={handleConfigure} className="configuration-form">
-          <div className="form-group">
-            <label htmlFor="wsUrl">WebSocket URL:</label>
-            <input
-              id="wsUrl"
-              type="text"
-              value={wsUrl}
-              onChange={(e) => setWsUrl(e.target.value)}
-              placeholder="ws://localhost:8000/ws"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Conformance Mode:</label>
-            <div className="radio-group">
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="online"
-                  checked={mode === 'online'}
-                  onChange={(e) => setMode(e.target.value)}
-                />
-                Online
-              </label>
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="multi"
-                  checked={mode === 'multi'}
-                  onChange={(e) => setMode(e.target.value)}
-                />
-                Multi-organizational
-              </label>
+        <div className="configuration-form">
+          <h1 className="configuration-title">GO-TR Monitor Configuration</h1>
+          <div>
+            <div className="form-group">
+              <label htmlFor="wsUrl">WebSocket URL:</label>
+              <input
+                id="wsUrl"
+                type="text"
+                value={wsUrl}
+                onChange={(e) => setWsUrl(e.target.value)}
+                placeholder="ws://localhost:8000/ws"
+                required
+              />
             </div>
+
+            <div className="form-group">
+              <label>Conformance Mode:</label>
+              <div className="radio-group">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="mode"
+                    value="online"
+                    checked={mode === 'online'}
+                    onChange={(e) => setMode(e.target.value)}
+                  />
+                  Online
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="mode"
+                    value="multi"
+                    checked={mode === 'multi'}
+                    onChange={(e) => setMode(e.target.value)}
+                  />
+                  Multi-organizational
+                </label>
+              </div>
+            </div>
+            
+            <button 
+              onClick={handleConfigure} 
+              type="button" 
+              className="configure-button"
+            >
+              Start Monitoring
+            </button>
+            
+            {configError && (
+              <div className="error-message">
+                {configError}
+              </div>
+            )}
           </div>
-
-          {configError && (
-            <div className="error-message">{configError}</div>
-          )}
-
-          <button type="submit" className="configure-button">
-            Start Monitoring
-          </button>
-        </form>
+        </div>
       </div>
     );
   }
-    // Main Monitor Component
+    
+  // Main Monitor Component
   return (
     <div className="monitor-container">
-      <h1>GO-TR Real-time Deviation Monitor</h1>
+      <h1 className="monitor-title">GO-TR Real-time Deviation Monitor</h1>
       
       <div className={`status ${connectionStatus}`}>
         {connectionStatus === 'connected' ? 'Connected' : 'Disconnected - Reconnecting...'}
@@ -383,20 +395,23 @@ const GOTRMonitor = () => {
       
       <div className="stats">
         <div className="stat-item">
-          <div className="stat-value">{stats.totalAlerts}</div>
+          <div className="stat-value total">{stats.totalAlerts}</div>
           <div className="stat-label">Total Alerts</div>
         </div>
+        
         <div className="stat-item">
-          <div className="stat-value">{stats.criticalCount}</div>
-          <div className="stat-label">Critical</div>
+          <div className="stat-value critical-stat">{stats.criticalCount}</div>
+          <div className="stat-label">Critical Alerts</div>
         </div>
+        
         <div className="stat-item">
-          <div className="stat-value">{stats.activeCases}</div>
+          <div className="stat-value deviation-stat">{stats.deviationCount}</div>
+          <div className="stat-label">Deviation Alerts</div>
+        </div>
+        
+        <div className="stat-item">
+          <div className="stat-value active">{stats.activeCases}</div>
           <div className="stat-label">Active Cases</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value">{stats.syncedAlerts}</div>
-          <div className="stat-label">Synced Alerts</div>
         </div>
       </div>
       
@@ -405,9 +420,15 @@ const GOTRMonitor = () => {
       </div>
       
       <div className="buttons">
-        <button onClick={clearAlerts}>Clear All Alerts</button>
-        <button onClick={exportAlerts}>Export Alerts</button>
-        <button onClick={syncWithServer}>Sync with Server</button>
+        <button onClick={clearAlerts} className="danger">
+          Clear All Alerts
+        </button>
+        <button onClick={exportAlerts} className="success">
+          Export Alerts
+        </button>
+        <button onClick={syncWithServer}>
+          Sync with Server
+        </button>
       </div>
       
       {syncStatus && (
@@ -420,15 +441,28 @@ const GOTRMonitor = () => {
         {alerts.map((alert) => (
           <div 
             key={alert.alert_id} 
-            className={`alert ${alert.severity || 'low'}`}
+            className={`alert ${alert.type === 'critical_alert' ? 'critical-alert' : 'deviation'}`}
           >
-            <strong>{new Date(alert.timestamp).toLocaleString()}</strong><br />
-            Case: {alert.case_id}<br />
-            Type: {alert.deviation_type}<br />
-            Message: {alert.message}<br />
-            Score: {alert.cumulative_score?.toFixed(2) || '0.00'}
+            <div className="alert-header">
+              <div className="alert-content">
+                <div className="timestamp">{new Date(alert.timestamp).toLocaleString()}</div>
+                <div className="case-id">Case: {alert.case_id}</div>
+                <div><strong>Type:</strong> {alert.deviation_type}</div>
+                <div><strong>Alert Type:</strong> {alert.type === 'critical_alert' ? 'Critical' : 'Deviation'}</div>
+                <div><strong>Message:</strong> {alert.message}</div>
+                <div><strong>Score:</strong> {alert.cumulative_score?.toFixed(2) || '0.00'}</div>
+              </div>
+              <div className={`alert-badge ${alert.type === 'critical_alert' ? 'critical' : 'deviation'}`}>
+                {alert.type === 'critical_alert' ? 'CRITICAL' : 'DEVIATION'}
+              </div>
+            </div>
           </div>
         ))}
+        {alerts.length === 0 && (
+          <div className="no-alerts">
+            No alerts yet. Waiting for data...
+          </div>
+        )}
       </div>
     </div>
   );
