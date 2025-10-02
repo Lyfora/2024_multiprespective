@@ -1,4 +1,4 @@
 # Ignore everything inside kafka/data
 OnlineApps/kafka-docker/data/*
-
+finalenv/
 !onlineapps/kafka/data/.gitkeep

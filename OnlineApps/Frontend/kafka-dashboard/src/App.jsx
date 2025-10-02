@@ -7,6 +7,7 @@ const GOTRMonitor = () => {
   const [wsUrl, setWsUrl] = useState('ws://localhost:8000/ws');
   const [apiUrl, setApiUrl] = useState('http://localhost:8000');
   const [mode, setMode] = useState('online');
+  const [conformance, setConformance] = useState('continue');
   const [configError, setConfigError] = useState('');
 
   // Connection state
@@ -44,7 +45,7 @@ const GOTRMonitor = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mode })
+        body: JSON.stringify({ mode, conformance })
       });
 
       const data = await response.json();
@@ -365,6 +366,32 @@ const GOTRMonitor = () => {
               </div>
             </div>
             
+            <div className="form-group">
+              <label>Running Mode:</label>
+              <div className="radio-group">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="conformance"
+                    value="continue"
+                    checked={conformance === 'continue'}
+                    onChange={(e) => setConformance(e.target.value)}
+                  />
+                  Continue
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="conformance"
+                    value="reset"
+                    checked={conformance === 'reset'}
+                    onChange={(e) => setConformance(e.target.value)}
+                  />
+                  Reset
+                </label>
+              </div>
+            </div>
+
             <button 
               onClick={handleConfigure} 
               type="button" 

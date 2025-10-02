@@ -291,7 +291,7 @@ async def startup_event():
     global kafka_producer
     
     # Configuration
-    brokers = ['localhost:9092', 'localhost:9093', 'localhost:9094']
+    brokers = ['localhost:29092', 'localhost:29093', 'localhost:29094']
     config = {
         'partitions': 3,
         'replication_factor': 2,

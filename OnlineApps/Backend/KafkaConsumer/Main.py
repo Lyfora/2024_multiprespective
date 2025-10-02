@@ -70,13 +70,12 @@ class GOTRKafkaConsumer:
     def __init__(self, kafka_config=None, neo4j_config=None):
         # Kafka configuration
         self.kafka_config = kafka_config or {
-            'bootstrap_servers': ['localhost:9092', 'localhost:9093', 'localhost:9094'],
-            'auto_offset_reset': 'earliest',
-            'enable_auto_commit': True,  #Set False to Reindex each run, set True to stay to the last index
-            'group_id': 'gotr_consumer_group_6',
+            'bootstrap_servers': ['localhost:29092', 'localhost:29093', 'localhost:29094'],
+            'group_id': 'gotr_consumer_group_7',
             'value_deserializer': lambda m: json.loads(m.decode('utf-8')),
             'key_deserializer': lambda m: m.decode('utf-8') if m else None
         }
+        
         
         # Neo4j configuration
         self.neo4j_config = neo4j_config or {
@@ -113,7 +112,14 @@ class GOTRKafkaConsumer:
         self.check = None  # Will be set via API before starting
         self.is_configured = False
         self.configuration_event = threading.Event()  # To signal when config is ready
+        self.consumer_thread = None
+        self.stop_event = threading.Event()
 
+        # -- Add Theread Lock
+        self.consumer_lock = threading.Lock()
+        self.config_lock = threading.Lock()
+        self.state_lock = threading.Lock()
+        self.neo4j_lock = threading.Lock()
         # ✅ STATE MANAGEMENT: This is what was extracted from tokenBasedReplay
         # These variables now live here to track state across all events.
         self.active_cases = set()
@@ -148,7 +154,7 @@ class GOTRKafkaConsumer:
             Configure the consumer before starting
             Expected JSON: {
                 "mode": "online" or "multi",
-                "webhook": "optional_webhook_url"  # for future use
+                "conformance": "continue" or "reset"
             }
             """
             if 'mode' not in config:
@@ -156,32 +162,89 @@ class GOTRKafkaConsumer:
                     "status": "error",
                     "message": "Missing 'mode' field in configuration"
                 }
-            
+
             mode = config['mode']
+            conformance = config['conformance']
+
             if mode not in ['online', 'multi']:
                 return {
                     "status": "error",
                     "message": f"Invalid mode '{mode}'. Must be 'online' or 'multi'"
                 }
-            
+            if conformance not in ['continue', 'reset']:
+                return {
+                    "status": "error",
+                    "message": f"Invalid conformance '{conformance}'. Must be 'continue' or 'reset'"
+                }
+
             # Set the configuration
             consumer_instance.check = mode
-            consumer_instance.is_configured = True
-            consumer_instance.configuration_event.set()  # Signal that config is ready
-            
-            print(f"Consumer configured with mode: {mode}")
-            
+
+            # Handle conformance mode
+            if conformance == 'reset':
+                print("Reset mode detected - reinitializing Kafka consumer...")
+                consumer_instance.stop_consumer_thread()
+
+                # Stop current consumer if running
+                with consumer_instance.consumer_lock:
+                    if consumer_instance.consumer:
+                        try:
+                            consumer_instance.consumer.close()
+                            consumer_instance.consumer = None
+                        except Exception as e:
+                            print(f"Error closing Kafka consumer: {e}")
+
+                #reinitialize neo4j
+                consumer_instance.initialize_neo4j_session()
+
+                # Clear neo4j database data
+                consumer_instance.clear_neo4j_case_data()
+
+                # Clear state
+                with consumer_instance.state_lock:  # ✅ PROTECTED
+                    consumer_instance.active_cases.clear()
+                    consumer_instance.anomaly_scores.clear()
+                    consumer_instance.case_event_history.clear()
+                    consumer_instance.unknown_activities.clear()
+                    consumer_instance.event_buffer.clear()
+                
+                with recent_alerts_lock:
+                    recent_alerts.clear()
+
+                # ✅ CLEAR ALERT QUEUE (drain any pending alerts)
+                while not alert_queue.empty():
+                    try:
+                        alert_queue.get_nowait()
+                    except:
+                        break
+                # Reinitialize consumer
+                consumer_instance.initialize_kafka_consumer(conformance)
+
+                consumer_instance.configuration_event.set()
+                consumer_instance.is_configured = True
+                
+                # 3. Start a new, clean thread
+                consumer_instance.start_consumer_thread()
+            else:
+                consumer_instance.initialize_kafka_consumer(conformance)
+                consumer_instance.is_configured = True
+                consumer_instance.configuration_event.set()
+                consumer_instance.start_consumer_thread()
+            print(f"Consumer configured with mode: {mode} and conformance: {conformance}")
+
             # Notify connected clients
             await manager.broadcast({
                 "type": "configured",
                 "timestamp": datetime.now().isoformat(),
                 "mode": mode,
-                "message": f"Consumer configured in {mode} mode"
+                "conformance": conformance,
+                "message": f"Consumer configured in {mode} mode with {conformance} conformance"
             })
-            
+
             return {
                 "status": "success",
                 "mode": mode,
+                "conformance": conformance,
                 "timestamp": datetime.now().isoformat(),
                 "message": "Consumer configured successfully. Ready to start processing."
             }
@@ -376,6 +439,77 @@ class GOTRKafkaConsumer:
         print("data out sended")
     #-------------- Web Socket Fast API end -------------------
 
+    # ------------- Neo4j Initialization ----------------------
+    def initialize_neo4j_session(self):
+        """Initialize or reinitialize Neo4j session"""
+        print("Initializing Neo4j session...")
+        
+        # Close existing session/driver if they exist
+        if self.session:
+            try:
+                self.session.close()
+            except:
+                pass
+            
+        if self.driver:
+            try:
+                self.driver.close()
+            except Exception as e:
+                print(f"Error closing Neo4j driver: {e}")
+            
+        # Create fresh connections
+        self.driver = GraphDatabase.driver(
+            uri=self.neo4j_config['uri'], 
+            auth=(self.neo4j_config['user'], self.neo4j_config['password'])
+        )
+        self.session = self.driver.session()
+        print("Neo4j session initialized successfully!")
+        
+    def clear_neo4j_case_data(self):
+        """Clear case executions while preserving master model"""
+        print("Clearing Neo4j case execution data...")
+
+        try:
+            with self.neo4j_lock:
+                if not self.session:
+                    print("⚠️ No active Neo4j session")
+                    return
+
+                # ✅ DELETE ONLY CLONED NODES (type='clone')
+                queries = [
+                    ("Deleting cloned Places", 
+                     "MATCH (p:Place {type:'clone'}) DETACH DELETE p"),
+
+                    ("Deleting cloned Transitions", 
+                     "MATCH (t:Transition {type:'clone'}) DETACH DELETE t"),
+
+                    ("Deleting cloned Variables", 
+                     "MATCH (v:Variable {type:'clone'}) DETACH DELETE v"),
+
+                    ("Deleting Case nodes", 
+                     "MATCH (c:Case) DETACH DELETE c"),
+
+                    ("Deleting cloned Arcs", 
+                     "MATCH ()-[a:Arc {type:'clone'}]-() DELETE a"),
+
+                    # ✅ KEEP: States (Reachability Graph)
+                    # ✅ KEEP: Master Petri Net (type='master')
+                    # ✅ KEEP: Organizational Model (Entity, Resource, etc.)
+                ]
+
+                for description, query in queries:
+                    print(f"  - {description}...")
+                    result = self.session.run(query)
+                    counters = result.consume().counters
+                    print(f"    ✅ Deleted: {counters.nodes_deleted} nodes, {counters.relationships_deleted} rels")
+
+                print("✅ Neo4j case data cleared successfully!")
+        except Exception as e:
+            print(f"❌ Error clearing Neo4j data: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    # Initialize master model
     def initialize_master_model(self):
         """Initialize the master model components"""
         print("Initializing master model...")
@@ -403,11 +537,7 @@ class GOTRKafkaConsumer:
         self.states, self.places = GO_TR.reachabilityGraphProperties(ts, net)
         
         # Initialize Neo4j connection
-        self.driver = GraphDatabase.driver(
-            uri=self.neo4j_config['uri'], 
-            auth=(self.neo4j_config['user'], self.neo4j_config['password'])
-        )
-        self.session = self.driver.session()
+        self.initialize_neo4j_session()
         
         # Initialize Neo4j environment
         neo4j_func.start_environtmen(net, ts, self.trans_name, initial_marking, final_marking, self.session)
@@ -415,14 +545,26 @@ class GOTRKafkaConsumer:
         
         print("Master model initialized successfully!")
         
-    def initialize_kafka_consumer(self):
+    def initialize_kafka_consumer(self,status):
         """Initialize Kafka consumer"""
-        print("Initializing Kafka consumer...")
+        print(f"Initializing Kafka consumer with {status}")
         self.consumer = KafkaConsumer(
             'pm.test.events.raw',
-            **self.kafka_config
+            **self.kafka_config,
+            auto_offset_reset='earliest' if status == 'reset' else 'latest',
+            enable_auto_commit=False if status == 'reset' else True
         )
-        print("Kafka consumer initialized successfully!")
+        if(status=='reset'):
+            # Poll to trigger partition assignment and wait for it
+            print("Waiting for partition assignment...")
+            while not self.consumer.assignment():
+                self.consumer.poll(timeout_ms=100)
+
+            print(f"Assigned partitions: {self.consumer.assignment()}")
+            self.consumer.seek_to_beginning()
+            print('Kafka Consumer resetted succesfully!')
+        else:
+            print("Kafka consumer continue/initialized successfully!")
         
     def convert_kafka_event_to_gotr_format(self, kafka_event):
         """Convert Kafka event message to GO-TR expected format"""
@@ -505,90 +647,115 @@ class GOTRKafkaConsumer:
                     print(f"ANOMALY DETECTED: Organizational issue for activity {activity_info[0]}: {activity_info[2]}")
                     
         print("=" * 50)
-        
-    def run_consumer(self):
-        """
-        The main consumer loop that manages case state and calls the GO-TR logic.
-        """
-        print("Waiting for configuration from frontend...")
+    
+    def stop_consumer_thread(self):
+        """Signals the consumer thread to stop and waits for it to exit."""
+        if self.consumer_thread and self.consumer_thread.is_alive():
+            print("Stopping consumer thread...")
+            self.stop_event.set()  # Signal the thread to stop
+            self.consumer_thread.join(timeout=5) # Wait for the thread to finish
+            if self.consumer_thread.is_alive():
+                print("Warning: Consumer thread did not stop in time.")
+            else:
+                print("Consumer thread stopped successfully.")
+        self.consumer_thread = None
 
-        # Wait until configured via API
-        self.configuration_event.wait()
+    def start_consumer_thread(self):
+        """Starts a new consumer thread."""
+        with self.consumer_lock:  # ✅ ATOMIC CHECK AND CREATE
+            if self.consumer_thread and self.consumer_thread.is_alive():
+                print("Consumer thread is already running.")
+                return
+                
+            print("Starting new consumer thread...")
+            self.stop_event.clear()
+            self.consumer_thread = Thread(target=self.run_consumer, daemon=True)
+            self.consumer_thread.start()
+            
+    # def run_consumer(self):
+    #     """
+    #     The main consumer loop that manages case state and calls the GO-TR logic.
+    #     """
+    #     print("Waiting for configuration from frontend...")
 
-        print(f"Configuration received! Starting GO-TR Kafka consumer in '{self.check}' mode...")
-        self.is_running = True
+    #     # Wait until configured via API
+    #     self.configuration_event.wait()
 
-        print("Starting stateful GO-TR Kafka consumer...")
+    #     print(f"Configuration received! Starting GO-TR Kafka consumer in '{self.check}' mode...")
+    #     self.is_running = True
 
-        try:
-            # Use poll() instead of iterator to keep running even without messages
-            while self.is_running:
-                # Poll for messages with a timeout
-                records = self.consumer.poll(timeout_ms=1000)  # 1 second timeout
+    #     print("Starting stateful GO-TR Kafka consumer...")
 
-                if not records:
-                    # No messages, but keep running
-                    continue
+    #     try:
+    #         # Use poll() instead of iterator to keep running even without messages
+    #         while not self.stop_event.is_set():
+    #             # Poll for messages with a timeout
+    #             with self.consumer_lock:
+    #                 if self.consumer is None:
+    #                     break
+    #                 records = self.consumer.poll(timeout_ms=1000)  # 1 second timeout
 
-                # Process messages
-                for topic_partition, messages in records.items():
-                    for message in messages:
-                        kafka_event = message.value
+    #             if not records:
+    #                 # No messages, but keep running
+    #                 continue
 
-                        # Use the corrected schema mapping
-                        p_id = kafka_event.get('trace_id')
-                        activity = kafka_event.get('activity')
-                        if not p_id or not activity:
-                            print(f"Skipping malformed message: {kafka_event}")
-                            continue
+    #             # Process messages
+    #             for topic_partition, messages in records.items():
+    #                 for message in messages:
+    #                     kafka_event = message.value
 
-                        print(f"Received event: Case {p_id} - Activity '{activity}'")
+    #                     # Use the corrected schema mapping
+    #                     p_id = kafka_event.get('trace_id')
+    #                     activity = kafka_event.get('activity')
+    #                     if not p_id or not activity:
+    #                         print(f"Skipping malformed message: {kafka_event}")
+    #                         continue
 
-                        # --- Rest of your processing logic stays the same ---
-                        if p_id not in self.active_cases:
-                            GO_TR.initialize_case_in_db(p_id, self.session)
-                            self.active_cases.add(p_id)
+    #                     print(f"Received event: Case {p_id} - Activity '{activity}'")
 
-                        gotr_event = self.convert_kafka_event_to_gotr_format(kafka_event)
+    #                     # --- Rest of your processing logic stays the same ---
+    #                     with self.state_lock:
+    #                         if p_id not in self.active_cases:
+    #                             with self.neo4j_lock:
+    #                                 GO_TR.initialize_case_in_db(p_id, self.session)
+    #                                 self.active_cases.add(p_id)
 
-                        result = GO_TR.process_single_event(
-                            p_id,
-                            gotr_event,
-                            self.trans_name,
-                            self.states,
-                            self.places,
-                            self.check,
-                            self.session
-                        )
+    #                         gotr_event = self.convert_kafka_event_to_gotr_format(kafka_event)
+    #                         with self.neo4j_lock:
+    #                             result = GO_TR.process_single_event(
+    #                                 p_id,
+    #                                 gotr_event,
+    #                                 self.trans_name,
+    #                                 self.states,
+    #                                 self.places,
+    #                                 self.check,
+    #                                 self.session
+    #                             )
 
-                        self.case_event_history[p_id].append(activity)
-                        if result['status'] == 'deviation':
-                            self.handle_deviation(p_id, result)
+    #                         self.case_event_history[p_id].append(activity)
+    #                         if result['status'] == 'deviation':
+    #                             self.handle_deviation(p_id, result)
 
-                        if activity == 'Return the item':
-                            print(f"Detected end of case for {p_id}. Finalizing...")
-                            final_stats = GO_TR.finalize_case(p_id, self.session)
-                            if p_id in self.active_cases:
-                                self.active_cases.remove(p_id)
+    #                         if activity == 'Return the item':
+    #                             print(f"Detected end of case for {p_id}. Finalizing...")
+    #                             final_stats = GO_TR.finalize_case(p_id, self.session)
+    #                             if p_id in self.active_cases:
+    #                                 self.active_cases.remove(p_id)
 
-        except KeyboardInterrupt:
-            print("\nShutting down consumer...")
-        except Exception as e:
-            print(f"Error in consumer: {e}")
-            import traceback
-            traceback.print_exc()
-        finally:
-            # Only cleanup if explicitly stopped
-            if not self.is_running:
-                self.cleanup()
+    #     except KeyboardInterrupt:
+    #         print("\nShutting down consumer...")
+    #     except Exception as e:
+    #         print(f"Error in consumer: {e}")
+    #         import traceback
+    #         traceback.print_exc()
+    #     finally:
+    #         print("Consumer thread exiting, cleaning up...")
+    #         self.cleanup()
 
-    def handle_deviation(self, p_id, deviation_details):
-        """
-        Handles the logic for when a deviation is detected.
-        Updates anomaly scores and sends alerts.
-        """
+    def _update_anomaly_scores(self, p_id, deviation_details):
+        """Update scores - MUST be called with state_lock held"""
         deviation_type = deviation_details.get('type')
-        activity_did = deviation_details.get('activity')
+
         if deviation_type == 'missing_token':
             self.anomaly_scores[p_id] += 1.0
         elif deviation_type == 'organizational':
@@ -599,34 +766,148 @@ class GOTRKafkaConsumer:
         elif deviation_type == 'unknown_activity':
             self.unknown_activities[p_id].append(deviation_details.get('activity'))
 
-        print(f"Anomaly score for case {p_id} is now: {self.anomaly_scores[p_id]}")
+    def _send_deviation_alert_async(self, p_id, deviation_details):
+        """Send alert - call OUTSIDE locks"""
+        # Read current scores with lock
+        with self.state_lock:
+            current_score = self.anomaly_scores[p_id]
+            recent_history = self.case_event_history[p_id][-5:]
 
-        # Prepare alert data
+        # Prepare and send without lock
         alert_data = {
             "type": "deviation_alert",
             "timestamp": datetime.now().isoformat(),
             "case_id": p_id,
-            "deviation_type": deviation_type,
+            "deviation_type": deviation_details.get('type'),
             "details": deviation_details,
-            "cumulative_score": self.anomaly_scores[p_id],
-            "event_history": self.case_event_history[p_id][-5:],  # Last 5 events
-            "message": f"Deviation detected in case {p_id}: {deviation_type} {activity_did}"
+            "cumulative_score": current_score,
+            "event_history": recent_history,
+            "message": f"Deviation detected in case {p_id}"
         }
+
+        if current_score >= 1.5:
+            alert_data["type"] = "critical_alert"
+
+        self.send_deviation_alert(alert_data)
+
+    def run_consumer(self):
+        self.configuration_event.wait()
+        self.is_running = True
+
+        try:
+            while not self.stop_event.is_set():
+                records = None
+
+                # ✅ STEP 1: Get records with consumer lock
+                with self.consumer_lock:
+                    if self.consumer is None:
+                        break
+                    records = self.consumer.poll(timeout_ms=1000)
+
+                if not records:
+                    continue
+
+                # ✅ STEP 2: Process WITHOUT holding global locks
+                for topic_partition, messages in records.items():
+                    for message in messages:
+                        kafka_event = message.value
+                        p_id = kafka_event.get('trace_id')
+                        activity = kafka_event.get('activity')
+
+                        if not p_id or not activity:
+                            continue
+
+                        # ✅ STEP 3: Initialize case (short lock)
+                        case_is_new = False
+                        with self.state_lock:
+                            if p_id not in self.active_cases:
+                                case_is_new = True
+                                self.active_cases.add(p_id)
+
+                        # ✅ STEP 4: DB init outside state lock
+                        if case_is_new:
+                            with self.neo4j_lock:
+                                GO_TR.initialize_case_in_db(p_id, self.session)
+
+                        # ✅ STEP 5: Process event (no state lock needed)
+                        gotr_event = self.convert_kafka_event_to_gotr_format(kafka_event)
+
+                        with self.neo4j_lock:
+                            result = GO_TR.process_single_event(
+                                p_id, gotr_event, self.trans_name,
+                                self.states, self.places, self.check, self.session
+                            )
+
+                        # ✅ STEP 6: Update state (short lock)
+                        with self.state_lock:
+                            self.case_event_history[p_id].append(activity)
+
+                            if result['status'] == 'deviation':
+                                self._update_anomaly_scores(p_id, result)
+
+                            if activity == 'Return the item':
+                                self.active_cases.discard(p_id)
+
+                        # ✅ STEP 7: Send alerts outside lock
+                        if result['status'] == 'deviation':
+                            self._send_deviation_alert_async(p_id, result)
+
+                        if activity == 'Return the item':
+                            with self.neo4j_lock:
+                                GO_TR.finalize_case(p_id, self.session)
+        except KeyboardInterrupt:
+            print("\nShutting down consumer...")
+        except Exception as e:
+            print(f"Error in consumer: {e}")
+            import traceback
+            traceback.print_exc()
+        finally:
+            self.cleanup()
+
+
+    # def handle_deviation(self, p_id, deviation_details):
+    #     """
+    #     Handles the logic for when a deviation is detected.
+    #     Updates anomaly scores and sends alerts.
+    #     """
+    #     deviation_type = deviation_details.get('type')
+    #     activity_did = deviation_details.get('activity')
+    #     if deviation_type == 'missing_token':
+    #         self.anomaly_scores[p_id] += 1.0
+    #     elif deviation_type == 'organizational':
+    #         if 'wrong_structure' in deviation_details.get('org_issues', []):
+    #             self.anomaly_scores[p_id] += 0.8
+    #         if 'wrong_team' in deviation_details.get('org_issues', []):
+    #             self.anomaly_scores[p_id] += 0.5
+    #     elif deviation_type == 'unknown_activity':
+    #         self.unknown_activities[p_id].append(deviation_details.get('activity'))
+
+    #     print(f"Anomaly score for case {p_id} is now: {self.anomaly_scores[p_id]}")
+
+    #     # Prepare alert data
+    #     alert_data = {
+    #         "type": "deviation_alert",
+    #         "timestamp": datetime.now().isoformat(),
+    #         "case_id": p_id,
+    #         "deviation_type": deviation_type,
+    #         "details": deviation_details,
+    #         "cumulative_score": self.anomaly_scores[p_id],
+    #         "event_history": self.case_event_history[p_id][-5:],  # Last 5 events
+    #         "message": f"Deviation detected in case {p_id}: {deviation_type} {activity_did}"
+    #     }
     
-        if self.anomaly_scores[p_id] >= 1.5:
-            print(f"🔥 WARNING! Inspection needed on Case ID: {p_id}")
-            # THIS IS WHERE YOU WOULD SEND A WEBSOCKET/API ALERT TO THE FRONTEND
-            critical_alert = {
-                **alert_data,
-                "type": "critical_alert",
-                "message": f"CRITICAL: Case {p_id} requires immediate inspection! with activity {activity_did} {deviation_type}"
-            }
-            self.send_deviation_alert(critical_alert)
-        else:
-            # Send WebSocket alert
-            self.send_deviation_alert(alert_data)
-
-
+    #     if self.anomaly_scores[p_id] >= 1.5:
+    #         print(f"🔥 WARNING! Inspection needed on Case ID: {p_id}")
+    #         # THIS IS WHERE YOU WOULD SEND A WEBSOCKET/API ALERT TO THE FRONTEND
+    #         critical_alert = {
+    #             **alert_data,
+    #             "type": "critical_alert",
+    #             "message": f"CRITICAL: Case {p_id} requires immediate inspection! with activity {activity_did} {deviation_type}"
+    #         }
+    #         self.send_deviation_alert(critical_alert)
+    #     else:
+    #         # Send WebSocket alert
+    #         self.send_deviation_alert(alert_data)
             
     def cleanup(self):
         """Clean up resources"""
@@ -652,15 +933,13 @@ def main():
     try:
         # Initialize master model and Kafka consumer
         consumer.initialize_master_model()
-        consumer.initialize_kafka_consumer()
-        
         # Start WebSocket server
         consumer.start_websocket_server()
         time.sleep(2)  # Give server time to start
+        print("System ready. Press Ctrl+C to exit.")
+        while True:
+            time.sleep(1)
 
-        # Run consumer (this will keep running)
-        consumer.run_consumer()
-        
     except KeyboardInterrupt:
         print("\nShutting down...")
     except Exception as e:
