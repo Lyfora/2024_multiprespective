@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<log xes.version="1849-2016" xes.features="nested-attributes" xmlns="http://www.xes-standard.org/">
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext" />
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<string key="origin" value="csv" />
+	<trace>
+		<string key="concept:name" value="6" />
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Receive an item and repair request" />
+			<string key="resource" value="John" />
+			<date key="timestamp" value="2025-10-03T01:21:45.635802+00:00" />
+			<string key="product_type" value="Mobile Phone team" />
+			<string key="concept:name" value="Receive an item and repair request" />
+			<date key="time:timestamp" value="2025-10-03T01:21:45.635802+00:00" />
+			<int key="@@index" value="0" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Check the item" />
+			<string key="resource" value="Pete" />
+			<date key="timestamp" value="2025-10-03T01:21:48.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Check the item" />
+			<date key="time:timestamp" value="2025-10-03T01:21:48.635802+00:00" />
+			<int key="@@index" value="1" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Check the warranty" />
+			<string key="resource" value="John" />
+			<date key="timestamp" value="2025-10-03T01:22:11.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Check the warranty" />
+			<date key="time:timestamp" value="2025-10-03T01:22:11.635802+00:00" />
+			<int key="@@index" value="2" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Notify the customer" />
+			<string key="resource" value="Clare" />
+			<date key="timestamp" value="2025-10-03T01:22:29.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Notify the customer" />
+			<date key="time:timestamp" value="2025-10-03T01:22:29.635802+00:00" />
+			<int key="@@index" value="3" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Repair the item" />
+			<string key="resource" value="John" />
+			<date key="timestamp" value="2025-10-03T01:22:35.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Repair the item" />
+			<date key="time:timestamp" value="2025-10-03T01:22:35.635802+00:00" />
+			<int key="@@index" value="4" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Return the item" />
+			<string key="resource" value="Clare" />
+			<date key="timestamp" value="2025-10-03T01:23:02.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Return the item" />
+			<date key="time:timestamp" value="2025-10-03T01:23:02.635802+00:00" />
+			<int key="@@index" value="5" />
+			<int key="@@case_index" value="0" />
+		</event>
+		<event>
+			<int key="case_id" value="6" />
+			<string key="activity" value="Issue payment" />
+			<string key="resource" value="Jane" />
+			<date key="timestamp" value="2025-10-03T01:23:09.635802+00:00" />
+			<float key="product_type" value="nan" />
+			<string key="concept:name" value="Issue payment" />
+			<date key="time:timestamp" value="2025-10-03T01:23:09.635802+00:00" />
+			<int key="@@index" value="6" />
+			<int key="@@case_index" value="0" />
+		</event>
+	</trace>
+</log>

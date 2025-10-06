@@ -220,12 +220,13 @@ class GOTRKafkaConsumer:
                 # Reinitialize consumer
                 consumer_instance.initialize_kafka_consumer(conformance)
 
-                consumer_instance.configuration_event.set()
                 consumer_instance.is_configured = True
+                consumer_instance.configuration_event.set()
                 
                 # 3. Start a new, clean thread
                 consumer_instance.start_consumer_thread()
             else:
+                print('Continue mode detected - resume from last offset')
                 consumer_instance.initialize_kafka_consumer(conformance)
                 consumer_instance.is_configured = True
                 consumer_instance.configuration_event.set()
@@ -671,6 +672,7 @@ class GOTRKafkaConsumer:
             self.stop_event.clear()
             self.consumer_thread = Thread(target=self.run_consumer, daemon=True)
             self.consumer_thread.start()
+            print("Consumer thread started successfully!")
             
     # def run_consumer(self):
     #     """
