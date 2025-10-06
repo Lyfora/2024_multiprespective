@@ -227,11 +227,25 @@ class GOTRKafkaConsumer:
                 consumer_instance.start_consumer_thread()
             else:
                 print('Continue mode detected - resume from last offset')
+                consumer_instance.stop_consumer_thread()
+                print('Stop Threading for Continue')
+                with consumer_instance.consumer_lock:
+                    if consumer_instance.consumer:
+                        try:
+                            consumer_instance.consumer.close()
+                            consumer_instance.consumer = None
+                        except Exception as e:
+                            print(f"Error closing Kafka consumer: {e}")
+                
+                # Reinitialize neo4j
+                consumer_instance.initialize_neo4j_session()
+                # Reinitialize kafka
                 consumer_instance.initialize_kafka_consumer(conformance)
                 consumer_instance.is_configured = True
                 consumer_instance.configuration_event.set()
                 consumer_instance.start_consumer_thread()
-            print(f"Consumer configured with mode: {mode} and conformance: {conformance}")
+
+                print(f"Consumer configured with mode: {mode} and conformance: {conformance}")
 
             # Notify connected clients
             await manager.broadcast({

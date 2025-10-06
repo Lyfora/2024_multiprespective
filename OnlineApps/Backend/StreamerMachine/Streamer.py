@@ -404,7 +404,7 @@ def main():
     # Start production
     try:
         producer.start_production(
-            file_paths=["output_logv2.xes"],
+            file_paths=["output_logv2test2.xes"],
             mode="fixed_interval",  # Options: exact, scaled, fixed_interval, burst
             speed=1      # 4x faster than original
         )
