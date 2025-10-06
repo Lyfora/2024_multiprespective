@@ -27,7 +27,7 @@ from typing import List, Dict
 import uuid
 from queue import Queue
 from collections import deque
-
+from pathlib import Path
 # Connection of Kafka
 class ConnectionManager:
     def __init__(self):
@@ -529,8 +529,14 @@ class GOTRKafkaConsumer:
         """Initialize the master model components"""
         print("Initializing master model...")
         
-        # Load your existing CSV data to create the master model
-        dataframe = pd.read_csv('G:/Project/AI/2024_multiprespective/2024_multiprespective/process_mining/media/datacsv_repair.csv', sep=';')
+        # Get the path to the current script (Main.py)
+        file_dir = Path(__file__).resolve().parent
+
+        # Navigate to the target CSV path from the script location
+        csv_path = (file_dir / '../../../process_mining/media/datacsv_repair.csv').resolve()
+
+        print(f"Resolved CSV path: {csv_path}")
+        dataframe = pd.read_csv(csv_path, sep=';')
         
         # Format dataframe
         start_time = datetime.now()
